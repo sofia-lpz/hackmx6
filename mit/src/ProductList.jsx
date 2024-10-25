@@ -3,10 +3,15 @@ import { useLocation } from 'react-router-dom';
 
 function ProductList() {
   const location = useLocation();
-  const [products, setProducts] = useState(location.state?.products || []);
+  const [products, setProducts] = useState(
+    location.state?.products?.map((product) => ({
+      ...product,
+      amount: Number(product.amount) || 1,
+    })) || []
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const [newProductName, setNewProductName] = useState('');
-  const [newProductAmount, setNewProductAmount] = useState(1);
+  const [newProductAmount] = useState(1); // Fixed amount of 1 for new products
 
   const handleDelete = (index) => {
     setProducts(products.filter((_, i) => i !== index));
@@ -20,14 +25,15 @@ function ProductList() {
 
   const handleIncrease = (index) => {
     const updatedProducts = [...products];
-    updatedProducts[index].amount += 1;
+    updatedProducts[index].amount = (Number(updatedProducts[index].amount) || 0) + 1;
     setProducts(updatedProducts);
   };
 
   const handleDecrease = (index) => {
     const updatedProducts = [...products];
-    if (updatedProducts[index].amount > 1) {
-      updatedProducts[index].amount -= 1;
+    const currentAmount = Number(updatedProducts[index].amount) || 1;
+    if (currentAmount > 1) {
+      updatedProducts[index].amount = currentAmount - 1;
       setProducts(updatedProducts);
     }
   };
@@ -36,7 +42,6 @@ function ProductList() {
     if (newProductName.trim()) {
       setProducts([...products, { name: newProductName, amount: newProductAmount }]);
       setNewProductName('');
-      setNewProductAmount(1);
     }
   };
 
@@ -45,7 +50,7 @@ function ProductList() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-900 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-900 p-4">
       <h1 className="text-2xl font-bold text-white mb-4">Product List</h1>
       <input
         type="text"
@@ -54,7 +59,7 @@ function ProductList() {
         placeholder="Search for a product..."
         className="border p-2 w-full mb-4"
       />
-      <div className="border p-4 w-full sm:w-80 h-96 overflow-y-auto mb-4 flex flex-col">
+      <div className="border p-4 w-full sm:w-96 lg:w-1/2 h-96 lg:h-[50vh] overflow-y-auto mb-4 flex flex-col">
         {filteredProducts.map((product, index) => (
           <div key={index} className="bg-gray-800 text-white p-2 rounded-lg mb-2 flex items-center justify-between">
             <div className="flex items-center">
@@ -87,29 +92,14 @@ function ProductList() {
           </div>
         ))}
       </div>
-      <div className="flex flex-col items-center w-full sm:w-80">
+      <div className="flex flex-col items-center w-full sm:w-96 lg:w-1/2">
         <input
           type="text"
           value={newProductName}
           onChange={(e) => setNewProductName(e.target.value)}
           placeholder="New product name"
-          className="border p-2 w-full mb-2"
+          className="border p-2 w-full mb-4"
         />
-        <div className="flex items-center mb-4">
-          <button
-            onClick={() => setNewProductAmount((prev) => Math.max(1, prev - 1))}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-          >
-            -
-          </button>
-          <span className="mx-2">{newProductAmount}</span>
-          <button
-            onClick={() => setNewProductAmount((prev) => prev + 1)}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-          >
-            +
-          </button>
-        </div>
         <button
           onClick={handleAddProduct}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
