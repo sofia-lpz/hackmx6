@@ -7,9 +7,9 @@ USE abarrotes;
 CREATE TABLE productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre_producto VARCHAR(255),
-    measure_type VARCHAR(50),
-    cantidad_producto INT,
-    cantidad_original INT
+    measure_type VARCHAR(50), -- kg, g, l, ml, etc
+    cantidad_producto INT, -- numero en unidades convertibles de UN PAQUETE (kg, g, etc)
+    cantidad_original INT -- numero bruto (numero de paquetes)
 );
 
 CREATE TABLE conversiones (
@@ -65,4 +65,3 @@ SELECT
     IFNULL(p.cantidad_producto * c.factor_conversion, p.cantidad_producto) AS cantidad_convertida
 FROM productos p
 LEFT JOIN conversiones c ON p.measure_type = c.unidad_destino;
-
