@@ -3,20 +3,11 @@ CREATE DATABASE IF NOT EXISTS abarrotes;
 
 USE abarrotes;
 
-CREATE TABLE inventario (
-    id_inventario INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_producto VARCHAR(255)
-);
-
 CREATE TABLE productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
-    id_categoria INT,
-    id_unidad INT,
     nombre_producto VARCHAR(255),
-    tipo_producto VARCHAR(255),
     measure_type VARCHAR(50),
-    cantidad_producto INT,
-    FOREIGN KEY (id_inventario) REFERENCES inventario(id_inventario)
+    cantidad_producto INT
 );
 
 CREATE TABLE conversiones (
@@ -55,7 +46,15 @@ END;
 //
 DELIMITER ;
 
-
+CREATE VIEW vista_inventario AS
+SELECT 
+    p.id_producto,
+    p.nombre_producto,
+    p.measure_type AS unidad_original,
+    c.unidad_destino,
+	(p.cantidad_producto * c.factor_conversion) AS cantidad_convertida
+FROM productos p
+JOIN conversiones c ON p.measure_type = c.unidad_origen;
 
 
 
