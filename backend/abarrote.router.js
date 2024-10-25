@@ -1,5 +1,5 @@
 import express from 'express';
-import * as abarroteController from './pronos.controller.js';
+import * as abarroteController from './abarrote.controller.js';
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.get("/query", abarroteController.query);
 
 // get, delete,
 
-export default router;
+export{ router};
