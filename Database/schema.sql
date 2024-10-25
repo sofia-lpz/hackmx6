@@ -3,25 +3,20 @@ CREATE DATABASE IF NOT EXISTS abarrotes;
 
 USE abarrotes;
 
-CREATE TABLE categoria (
-    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE inventario (
+    id_inventario INT AUTO_INCREMENT PRIMARY KEY,
     tipo_producto VARCHAR(255)
-);
-
-CREATE TABLE unidades_de_medida (
-    id_unidad INT AUTO_INCREMENT PRIMARY KEY,
-    measure INT,
-    measure_type VARCHAR(50)
 );
 
 CREATE TABLE productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     id_categoria INT,
+    id_unidad INT,
     nombre_producto VARCHAR(255),
     tipo_producto VARCHAR(255),
-    measure VARCHAR(50),
+    measure_type VARCHAR(50),
     cantidad_producto INT,
-    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
+    FOREIGN KEY (id_inventario) REFERENCES inventario(id_inventario)
 );
 
 CREATE TABLE conversiones (
@@ -37,24 +32,29 @@ CREATE TRIGGER equivalencia
 BEFORE INSERT ON productos
 FOR EACH ROW
 BEGIN
-    DECLARE factor DECIMAL(10, 6);
+    DECLARE factor DECIMAL(10, 6) DEFAULT 1;
     DECLARE unidad_destino VARCHAR(50);
 
-    SELECT measure INTO unidad_destino FROM unidades_de_medida WHERE id_unidad = NEW.id_unidad;
-
-    IF NEW.measure != unidad_destino THEN
-        SELECT factor_conversion INTO factor
-        FROM conversiones
-        WHERE unidad_origen = NEW.measure AND unidad_destino = unidad_destino;
-        
-        SET NEW.cantidad_producto = NEW.cantidad_producto * factor;
-        
-        SET NEW.measure = unidad_destino;
+    IF NEW.measure_type = 'kg' THEN
+        SET unidad_destino = 'g';
+    ELSEIF NEW.measure_type = 'l' THEN
+        SET unidad_destino = 'ml';
+    ELSE
+        SET unidad_destino = NEW.measure_type;
     END IF;
-END;
-//
 
+    SELECT factor_conversion INTO factor
+    FROM conversiones
+    WHERE unidad_origen = NEW.measure_type AND unidad_destino = unidad_destino;
+
+    SET NEW.cantidad_producto = NEW.cantidad_producto * factor;
+
+    SET NEW.measure_type = unidad_destino;
+END;
+
+//
 DELIMITER ;
+
 
 
 
