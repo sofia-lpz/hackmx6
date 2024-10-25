@@ -48,7 +48,7 @@ function Mensajes() {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Escribe tu mensaje..."
-        className="border p-2 w-full mb-2"
+        className="border p-2 w-full sm:w-80 mb-2"
       />
       <div className="flex gap-2">
         <button
@@ -64,6 +64,12 @@ function Mensajes() {
           Finished
         </button>
       </div>
+      <button
+        onClick={() => window.location.href = '/'}
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+      >
+        Return
+      </button>
     </div>
   );
 }

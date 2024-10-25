@@ -107,6 +107,18 @@ function ProductList() {
           Add Product
         </button>
       </div>
+      <button
+        onClick={() => window.location.href = '/'}
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+      >
+        Regresar a inicio
+      </button>
+      <button
+        onClick={() => window.location.href = '/messages'}
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+      >
+        Regresar a chatbot
+      </button>
     </div>
   );
 }
