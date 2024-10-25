@@ -17,3 +17,4 @@ INSERT INTO productos (nombre_producto, measure_type, cantidad_producto) VALUES
 ('Azúcar','kg', 60),
 ('Harina','kg', 90),
 ('Frijoles','kg', 120);
+
