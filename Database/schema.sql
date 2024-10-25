@@ -1,13 +1,15 @@
 DROP DATABASE IF EXISTS abarrotes;
 CREATE DATABASE IF NOT EXISTS abarrotes;
 
+
 USE abarrotes;
 
 CREATE TABLE productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre_producto VARCHAR(255),
     measure_type VARCHAR(50),
-    cantidad_producto INT
+    cantidad_producto INT,
+    cantidad_original INT
 );
 
 CREATE TABLE conversiones (
@@ -37,8 +39,15 @@ BEGIN
     SELECT factor_conversion INTO factor
     FROM conversiones
     WHERE unidad_origen = NEW.measure_type AND unidad_destino = unidad_destino;
+    
+    SET NEW.cantidad_original = NEW.cantidad_producto;
 
-    SET NEW.cantidad_producto = NEW.cantidad_producto * factor;
+    -- Convertir y actualizar la cantidad del producto
+    IF factor IS NOT NULL THEN
+        SET NEW.cantidad_producto = NEW.cantidad_producto * factor;
+    ELSE
+        SET NEW.cantidad_producto = NEW.cantidad_producto;
+    END IF;
 
     SET NEW.measure_type = unidad_destino;
 END;
@@ -46,15 +55,14 @@ END;
 //
 DELIMITER ;
 
-CREATE VIEW vista_inventario AS
+CREATE OR REPLACE VIEW vista_inventario AS
 SELECT 
     p.id_producto,
     p.nombre_producto,
-    p.measure_type AS unidad_original,
-    c.unidad_destino,
-	(p.cantidad_producto * c.factor_conversion) AS cantidad_convertida
+    p.measure_type AS unidad_convertida,
+    IFNULL(c.unidad_origen, 'N/A') AS unidad_original,
+    p.cantidad_original,
+    IFNULL(p.cantidad_producto * c.factor_conversion, p.cantidad_producto) AS cantidad_convertida
 FROM productos p
-JOIN conversiones c ON p.measure_type = c.unidad_origen;
-
-
+LEFT JOIN conversiones c ON p.measure_type = c.unidad_destino;
 
