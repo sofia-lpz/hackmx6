@@ -1,14 +1,5 @@
 import * as abarroteService from './abarrote.service.js';
 
-export const getInventario = async (req, res) => {
-    try {
-        const inventario = await abarroteService.getInventario();
-        res.json(inventario);
-    } catch (error) {
-        res.status(500).send({ message: error.message });
-    }
-}
-
 export const getProductos = async (req, res) => {
     try {
         const productos = await abarroteService.getProductos();
@@ -18,10 +9,10 @@ export const getProductos = async (req, res) => {
     }
 }
 
-export const putInventario = async (req, res) => {
+export const putProductos = async (req, res) => {
     try {
-        const inventario = await abarroteService.putInventario(req.body);
-        res.json(inventario);
+        const productos = await abarroteService.putProductos(req.body);
+        res.json(productos);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

@@ -9,21 +9,18 @@ async function connectToDB() {
     });
 }
 
-export async function getInventario() {
-    const connection = await connectToDB();
-    const [rows] = await connection.execute("SELECT * FROM inventario");
-    return rows;
-}
-
 export async function getProductos() {
     const connection = await connectToDB();
     const [rows] = await connection.execute("SELECT * FROM productos");
     return rows;
 }
 
-export async function putInventario(inventario) {
+export async function putProductos(producto) {
     const connection = await connectToDB();
-    const [rows] = await connection.execute("UPDATE inventario SET ? WHERE id = ?", [inventario, inventario.id]);
+    const [rows] = await connection.execute(
+        "UPDATE productos SET nombre = ?, precio = ? WHERE id = ?",
+        [producto.nombre, producto.precio, producto.id]
+    );
     return rows;
 }
 
@@ -35,13 +32,10 @@ export async function deleteProductos(id) {
 
 export async function postProductos(producto) {
     const connection = await connectToDB();
-    const [rows] = await connection.execute("INSERT INTO productos SET ?", producto);
-    return rows;
-}
-
-export async function query(query) {
-    const connection = await connectToDB();
-    const [rows] = await connection.execute(query);
+    const [rows] = await connection.execute(
+        "INSERT INTO productos (nombre, precio) VALUES (?, ?)",
+        [producto.nombre, producto.precio]
+    );
     return rows;
 }
 

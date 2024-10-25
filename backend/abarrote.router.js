@@ -3,14 +3,13 @@ import * as abarroteController from './pronos.controller.js';
 
 const router = express.Router();
 
-router.get("/inventario", abarroteController.getInventario);
 router.get("/productos", abarroteController.getProductos);
 
-router.put("/inventario/", abarroteController.putInventario);
+router.put("/productos/:id", abarroteController.putProductos);
+
 router.delete("/productos/:id", abarroteController.deleteProductos);
 
 router.post("/productos", abarroteController.postProductos);
-
 
 router.get("/query", abarroteController.query);
 
