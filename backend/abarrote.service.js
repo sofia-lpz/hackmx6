@@ -208,3 +208,40 @@ export async function getProveedorById(id) {
         throw error;
     }
 }
+
+//extra endpoints:
+
+/*
+//ventas por cantidad
+export async function getProductosVentasMasBajas() {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos ORDER BY ventas ASC LIMIT 3");
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getProductosVentasMasAltas() {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos ORDER BY ventas DESC LIMIT 3");
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+//ventas por precio
+export async function getProductosVentasFiltradasFecha(fecha) {
+    //TODO
+}
+
+export async function getProductosDiasMasVentas() {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos ORDER BY dias_mas_ventas DESC LIMIT 3");
+        return rows;
+    }
+*/
