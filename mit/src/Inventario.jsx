@@ -11,7 +11,7 @@ function Inventario() {
       <div className="flex flex-col sm:flex-row gap-4 mt-5">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded w-full sm:w-auto"
-          onClick={() => alert('Mock: Take a picture of your inventory note')}
+          onClick={() => navigate('/subir-foto')}
         >
           <b>Tomar una foto:</b> Sube una foto de tu inventario escrito a mano
         </button>
@@ -26,6 +26,12 @@ function Inventario() {
           onClick={() => alert('Mock: Input inventory through voice commands')}
         >
           <b>Inventario por comandos de voz:</b> Habla para introducir tu inventario
+        </button>
+        <button
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
+          onClick={() => navigate('/lista-productos')}
+        >
+          <b>Ver inventario:</b> Consulta lo que actualmente existe en tu inventario
         </button>
       </div>
     </div>

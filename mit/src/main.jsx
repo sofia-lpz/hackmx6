@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Inventario from './Inventario';
 import Mensajes from './Mensajes';
 import ProductList from './ProductList';
+import ListaProductos from './ListaProductos';
+import SubirFoto from './SubirFoto.jsx';
 import './index.css';
 import VoiceChat from './Voicechat';
 import DataExtraction from './DataExtraction';

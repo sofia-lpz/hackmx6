@@ -27,7 +27,7 @@ class DataProcessor {
                             "precio": numeric_price,
                             "stock": "stock_value",
                             "categoria": "category",
-                            "proveedor_id": "provider"
+                            "proveedor_nombre": "provider"
                         }
                     ]
                 }
@@ -36,12 +36,10 @@ class DataProcessor {
                 {
                     "data": [
                         {
-                            "fecha": "date",
+                            
                             "total": numeric_total,
-                            "producto_id": "product_id",
+                            "producto_nombre": "product_id",
                             "cantidad": numeric_quantity,
-                            "cliente": "client_name",
-                            "metodo_pago": "payment_method"
                         }
                     ]
                 }
@@ -51,8 +49,7 @@ class DataProcessor {
                     "data": [
                         {
                             "nombre": "provider_name",
-                            "contacto": "contact_name",
-                            "direccion": "address",
+                            "periodo": "periodo",
                             "telefono": "phone",
                             "email": "email",
                             "categoria": "category"
