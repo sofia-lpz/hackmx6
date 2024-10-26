@@ -10,7 +10,7 @@ router.get("/productos/:id", abarroteController.getProductoById);
 //regresa un producto por su id.
 
 router.put("/productos/vender/:id/:cantidad", abarroteController.venderProducto);
-router.put("/productos/agregar/:id/cantidad", abarroteController.agregarProductos);
+router.put("/productos_agregar/:id/:cantidad", abarroteController.agregarProductos);
 
 router.put("/productos/:id", abarroteController.putProductos);
 router.delete("/productos/:id", abarroteController.deleteProductos);
