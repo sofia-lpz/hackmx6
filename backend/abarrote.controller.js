@@ -21,7 +21,7 @@ export const venderProducto = async (req, res) => {
 
 export const agregarProductos = async (req, res) => {
     try {
-        const productos = await abarroteService.agregarProductos(req.params.id, req.params.g, req.params.cantidad);
+        const productos = await abarroteService.agregarProductos(req.params.id, req.params.cantidad);
         res.json(productos);
     } catch (error) {
         res.status(500).send({ message: error.message });

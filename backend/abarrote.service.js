@@ -50,19 +50,15 @@ export async function venderProducto(id, g, cantidad) {
     }
 }
 
-export async function agregarProductos(id, g, cantidad) {
+export async function agregarProductos(id, cantidad) {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute("SELECT * FROM productos WHERE id = ?", [id]);
         const producto = rows[0];
 
-        if (producto.cantidad < cantidad) {
-            throw new Error("No hay suficiente cantidad de producto");
-        }
         producto.cantidad += cantidad;
         await connection.execute("UPDATE productos SET cantidad = ? WHERE id = ?", [producto.cantidad, id]);
-        await connection.execute("INSERT INTO ventas (id_producto, cantidad, fecha) VALUES (?, ?, NOW())", [id, cantidad]);
-
+        
         return producto;
     } catch (error) {
         throw error;
