@@ -199,8 +199,21 @@ export async function postVentas(venta) {
             }
         }
 
+        // Check if the product quantity is sufficient
+        const [productRows] = await connection.execute("SELECT cantidad FROM productos WHERE id = ?", [producto.id]);
+        const product = productRows[0];
+        if (product.cantidad < venta.cantidad) {
+            throw new Error("No hay suficiente cantidad de producto");
+        }
+
+        // Insert the sale into the ventas table
         const query = `INSERT INTO ventas (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
         await connection.execute(query, values);
+
+        // Update the product quantity
+        const newQuantity = product.cantidad - venta.cantidad;
+        await connection.execute("UPDATE productos SET cantidad = ? WHERE id = ?", [newQuantity, producto.id]);
+
         connection.end();
         return venta; // Return the venta object instead of producto
     } catch (error) {
