@@ -34,7 +34,7 @@ router.get("/proveedores/:id", abarroteController.getProveedorById);
 
 
 //ventas por cantidad
-router.get("/productos/ventas_mas_bajas", abarroteController.getProductosVentasMasBajas);//regresa el producto con menos ventas
+router.get("/productos/ventas_mas_bajas", abarroteController.getProductosVentasMasBajas);//regresa el producto con menos ventas done 
 router.get("/productos/ventas_mas_altas", abarroteController.getProductosVentasMasAltas);//regresa el producto con mas ventas
 
 //ventas por precio

@@ -142,7 +142,9 @@ export const getProveedorById = async (req, res) => {
 
 //ventas por cantidad
 export const getProductosVentasMasBajas = async (req, res) => {
+    console.log("Request recibido", req.params);
     try {
+        console.log("Request recibido", req.params);
         const productos = await abarroteService.getProductosVentasMasBajas();
         res.json(productos);
     } catch (error) {
