@@ -111,6 +111,11 @@ export async function postProductos(producto) {
 
         const keys = Object.keys(producto);
         const values = Object.values(producto);
+
+        if (keys.includes('proveedor_nombre')) {
+            const proveedor = getProveedorByNombre(producto.proveedor_nombre);
+            values.push(proveedor.id);
+        }
         const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
 
         await connection.execute(query, values);
@@ -188,6 +193,16 @@ export async function getVentaById(id) {
 }
 
 //proveedores
+
+export async function getProveedorByNombre(){
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM proveedores WHERE nombre = ?", [nombre]);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
 
 export async function getProveedores() {
     try {
@@ -270,6 +285,7 @@ export async function getProductosVentasMasBajas() {
             LIMIT 1;
         `);
         console.log(rows);
+<<<<<<< HEAD
         return rows;
     } catch (error) {
         console.error('Error en la ejecución:', error.message);
@@ -288,8 +304,11 @@ export async function getProveedoresEsteDia() {
             ORDER BY total_ventas DESC
             LIMIT 1;
         `);
+=======
+>>>>>>> cyber
         return rows;
     } catch (error) {
+        console.error('Error en la ejecución:', error.message);
         throw error;
     }
 }
@@ -323,18 +342,55 @@ export async function getPreguntasStockMes() {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
+<<<<<<< HEAD
             SELECT DAYNAME(v.fecha) AS dia_semana, COUNT(*) AS total_ventas
             FROM ventas v
             GROUP BY dia_semana
             ORDER BY total_ventas DESC
             LIMIT 1;
         `,);
+=======
+            SELECT p.nombre_producto, SUM(v.cantidad) AS total_ventas
+            FROM productos p
+            JOIN ventas v ON p.id = v.id_producto
+            GROUP BY p.id
+            ORDER BY total_ventas DESC
+            LIMIT 1;
+        `);
+>>>>>>> cyber
         return rows;
     } catch (error) {
         throw error;
     }
 }
 
+<<<<<<< HEAD
+=======
+// Ventas por precio
+// Los campos del QUERY de la estan harcoded
+export async function getProductosVentasFiltradasFecha() {
+     try {
+        const connection = await connectToDB();
+
+        const [dates] = await connection.execute(`
+            SELECT MIN(fecha) AS startDate, MAX(fecha) AS endDate FROM ventas;
+        `);
+        const { startDate, endDate } = dates[0];
+
+        const [rows] = await connection.execute(`
+            SELECT p.nombre_producto, SUM(v.cantidad * p.precio) AS total_ventas
+            FROM productos p
+            JOIN ventas v ON p.id = v.id_producto
+            WHERE v.fecha BETWEEN ? AND ?
+            GROUP BY p.id
+            ORDER BY total_ventas DESC;
+        `, [startDate, endDate]);
+        return rows;
+     } catch (error) {
+         throw error;
+     }
+ }
+>>>>>>> cyber
 
 // export async function getProductosSinVentasFiltradasFecha() {
 //     try {
@@ -364,6 +420,56 @@ export async function getProductosStockProximoAAcabarse() {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
+<<<<<<< HEAD
+            SELECT nombre_producto, cantidad
+            FROM productos
+            WHERE cantidad < 5;
+        `);
+=======
+            SELECT DAYNAME(v.fecha) AS dia_semana, COUNT(*) AS total_ventas
+            FROM ventas v
+            GROUP BY dia_semana
+            ORDER BY total_ventas DESC
+            LIMIT 1;
+        `,);
+>>>>>>> cyber
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+<<<<<<< HEAD
+=======
+
+// export async function getProductosSinVentasFiltradasFecha() {
+//     try {
+//         const connection = await connectToDB();
+
+//         const [dates] = await connection.execute(`
+//             SELECT MIN(fecha) AS startDate, MAX(fecha) AS endDate FROM ventas;
+//         `);
+//         const { startDate, endDate } = dates[0];
+
+//         const [rows] = await connection.execute(`
+//             SELECT p.nombre_producto
+//             FROM productos p
+//             WHERE NOT EXISTS (
+//                 SELECT 1 FROM ventas v WHERE p.id = v.id_producto AND v.fecha BETWEEN ? AND ?
+//             );
+//         `, [startDate, endDate]);
+//         return rows;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
+// De stock
+
+export async function getProductosStockProximoAAcabarse() {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute(`
             SELECT nombre_producto, cantidad
             FROM productos
             WHERE cantidad < 5;
@@ -374,6 +480,7 @@ export async function getProductosStockProximoAAcabarse() {
     }
 }
 
+>>>>>>> cyber
 export async function getProductosStockAgotado() {
     try {
         const connection = await connectToDB();
@@ -476,7 +583,11 @@ export async function getProductosCuantoQueda(nombre) {
 }
 
 // Proveedores
+<<<<<<< HEAD
 
+=======
+// Ver como pasar las fechas
+>>>>>>> cyber
 export async function getProveedoresMasProximo() {
     try {
         const connection = await connectToDB();
@@ -493,14 +604,22 @@ export async function getProveedoresMasProximo() {
     }
 }
 
+<<<<<<< HEAD
 // Arreglar query
+=======
+// Modificar QUERY para que tambien sea por 0
+>>>>>>> cyber
 export async function getProveedoresSiPaso(nombre) {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
             SELECT 1 AS paso
             FROM proveedores
+<<<<<<< HEAD
             WHERE nombre = 'Proveedor A' AND pasaron_ultima_fecha = TRUE;
+=======
+            WHERE nombre = ? AND pasaron_ultima_fecha = TRUE;
+>>>>>>> cyber
         `, [nombre]);
         return rows;
     } catch (error) {
@@ -508,15 +627,24 @@ export async function getProveedoresSiPaso(nombre) {
     }
 }
 
+<<<<<<< HEAD
 export async function getProveedoresProductos(providerName) {
+=======
+export async function getProveedoresProductos(nombre) {
+>>>>>>> cyber
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
             SELECT p.nombre_producto, p.cantidad
             FROM productos p
             JOIN proveedores pr ON p.proveedor_id = pr.id
+<<<<<<< HEAD
             WHERE pr.nombre = 'Proveedor B';
         `, [providerName]);
+=======
+            WHERE pr.nombre = ?;
+        `, [nombre]);
+>>>>>>> cyber
         return rows;
     } catch (error) {
         throw error;
@@ -537,6 +665,10 @@ export async function getProveedoresNoPasaron() {
     }
 }
 
+<<<<<<< HEAD
+=======
+// Sincronizar las fechas para que utilize tiempos reales
+>>>>>>> cyber
 export async function getProveedoresEsteMes() {
     try {
         const connection = await connectToDB();
@@ -552,6 +684,10 @@ export async function getProveedoresEsteMes() {
     }
 }
 
+<<<<<<< HEAD
+=======
+// Igual que el anterior
+>>>>>>> cyber
 export async function getProveedoresEstaSemana() {
     try {
         const connection = await connectToDB();
@@ -567,7 +703,12 @@ export async function getProveedoresEstaSemana() {
     }
 }
 
+<<<<<<< HEAD
 /*export async function getProveedoresEsteDia() {
+=======
+// Igual que el anterior
+export async function getProveedoresEsteDia() {
+>>>>>>> cyber
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
@@ -580,7 +721,11 @@ export async function getProveedoresEstaSemana() {
     } catch (error) {
         throw error;
     }
+<<<<<<< HEAD
 }*/
+=======
+}
+>>>>>>> cyber
 
 // Preguntas
 
@@ -598,7 +743,11 @@ export async function getPreguntasStockSemana() {
     }
 }
 
+<<<<<<< HEAD
 /*export async function getPreguntasStockMes() {
+=======
+export async function getPreguntasStockMes() {
+>>>>>>> cyber
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
@@ -610,4 +759,8 @@ export async function getPreguntasStockSemana() {
     } catch (error) {
         throw error;
     }
+<<<<<<< HEAD
 }*/
+=======
+}
+>>>>>>> cyber

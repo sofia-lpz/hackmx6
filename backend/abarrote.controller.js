@@ -57,8 +57,21 @@ export const deleteProductos = async (req, res) => {
 
 export const postProductos = async (req, res) => {
     try {
+        const existingProducto = await abarroteService.getProductosTodaviaHay(req.body.nombre_producto);
+        if (existingProducto && existingProducto.length > 0) {
+            return res.status(409).send({ message: "Producto con el mismo nombre ya existe." });
+        }
         const productos = await abarroteService.postProductos(req.body);
         res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+export const getProveedorByNombre = async (req, res) => {
+    try {
+        const proveedor = await abarroteService.getProveedorByNombre(req.params.nombre);
+        res.json(proveedor);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
@@ -170,13 +183,8 @@ export const getProductosVentasMasBajas = async (req, res) => {
         if (!productos || productos.length === 0) {
             return res.status(404).json({ message: "No se encontraron productos con ventas bajas." });
         }
-        if (!productos || productos.length === 0) {
-            return res.status(404).json({ message: "No se encontraron productos con ventas bajas." });
-        }
         res.json(productos);
     } catch (error) {
-        console.error('Error fetching lowest sales products:', error);
-        res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
         console.error('Error fetching lowest sales products:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
     }
@@ -202,6 +210,7 @@ export const getProductosVentasFiltradasFecha = async (req, res) => {
         res.status(500).send({ message: "Error al recuperar los productos con ventas filtradas por fecha." });
     }
 };
+
 
 
 export const getProductosDiasMasVentas = async (req, res) => {
