@@ -4,22 +4,17 @@ import * as abarroteController from './abarrote.controller.js';
 const router = express.Router();
 
 router.get("/productos", abarroteController.getProductos);
-//check
+//regresa la lista de todos los productos.
 
 router.get("/productos/:id", abarroteController.getProductoById);
-//check
+//regresa un producto por su id.
 
 router.put("/productos/vender/:id/:cantidad", abarroteController.venderProducto);
 router.put("/productos/agregar/:id/cantidad", abarroteController.agregarProductos);
 
 router.put("/productos/:id", abarroteController.putProductos);
-//no
-
 router.delete("/productos/:id", abarroteController.deleteProductos);
-//check
-
 router.post("/productos", abarroteController.postProductos);
-//check
 
 router.get("/ventas", abarroteController.getVentas);
 router.delete("/ventas/:id", abarroteController.deleteVentas);
@@ -54,15 +49,15 @@ router.get("/productos_precio_mas_alto", abarroteController.getProductosPrecioMa
 router.get("/productos_precio_filtrado", abarroteController.getProductosPrecioFiltrado);//todavia no
 
 router.get("/productos_precio_total_inventario", abarroteController.getProductosPrecioTotalInventario);//regresa una suma de los precios de todos los productos multiplicados por la cantidad de productos
-router.get("/productos_todavia_hay/:nombre", abarroteController.getProductosTodaviaHay);//regresa 1 o 0 si todavia hay de ese producto usando su nombre
-router.get("/productos_cuanto_queda/:nombre", abarroteController.getProductosCuantoQueda);//regresa la cantidad de ese producto que queda usando su nombre
+router.get("/productos_todavia_hay/:nombre", abarroteController.getProductosTodaviaHay);//regresa 1 o 0 si todavia hay de ese producto usando el nombre del producto como un parametro dentro de la url
+router.get("/productos_cuanto_queda/:nombre", abarroteController.getProductosCuantoQueda);//regresa la cantidad de ese producto que queda usando el nombre del producto como un parametro dentro de la url
 
 //proveedores
-router.get("/proveedores_mas_proximo/:fecha_actual", abarroteController.getProveedoresMasProximo);//regresa el proveedor mas proximo a la fecha actual
-router.get("/proveedores_sipaso/:nombre", abarroteController.getProveedoresSiPaso);//regresa 1 o 0 si el proveedor ya paso usando su nombre
-router.get("/proveedores_productos/:nombre", abarroteController.getProveedoresProductos);//regresa los productos que vende un proveedor usando su nombre
-router.get("/proveedores_no_pasaron", abarroteController.getProveedoresNoPasaron);//regresa los proveedores que no pasaron la ultima vez
-router.get("/proveedores_este_mes", abarroteController.getProveedoresEsteMes);//regresa los proveedores que van a pasar este mes (checar que sean despues de hoy)
+router.get("/proveedores_mas_proximo/:fecha_actual", abarroteController.getProveedoresMasProximo);//regresa el proveedor con la fecha de entrega mas proxima a la fecha actual. Requiere como parametro la fecha actual
+router.get("/proveedores_sipaso/:nombre", abarroteController.getProveedoresSiPaso);//regresa 1 o 0 si el proveedor ya paso usando el nombre del provedor como un parametro dentro de la url
+router.get("/proveedores_productos/:nombre", abarroteController.getProveedoresProductos);//regresa los productos que vende un proveedor usando el nombre del provedor como un parametro dentro de la url
+router.get("/proveedores_no_pasaron", abarroteController.getProveedoresNoPasaron);//regresa una lista de proveedores que no pasaron la ultima vez
+router.get("/proveedores_este_mes", abarroteController.getProveedoresEsteMes);//regresa los proveedores que van a pasar este mes
 router.get("/proveedores_esta_semana", abarroteController.getProveedoresEstaSemana);//regresa los proveedores que van a pasar esta semana (checar que sean despues de hoy)
 router.get("/proveedores_este_dia", abarroteController.getProveedoresEsteDia);//regresa los provedores que van a pasar hoy (sin checar hora)
 
