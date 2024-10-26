@@ -18,7 +18,7 @@ function ListaProductos() {
             id: product.id,
             name: product.nombre_producto,
             amount: product.cantidad.toFixed(2), // Rounded to two decimals
-            unit: product.gramos_por_unidad ? 'g' : 'kg',
+            unit: product.unidad,
             price: product.precio.toFixed(2), // Rounded to two decimals
           }));
           setProducts(fetchedProducts);

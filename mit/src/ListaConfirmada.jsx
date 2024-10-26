@@ -103,7 +103,7 @@ const ListaConfirmada = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-900 p-4">
             <div className="w-11/12 max-w-md bg-white p-5 shadow-lg rounded-lg">
                 <h1 className="text-2xl mb-5 text-center">Esto fue lo que entendí...</h1>
                 <p className='text-center'>¿Está todo en orden?</p>
@@ -117,14 +117,14 @@ const ListaConfirmada = () => {
                                     type="number"
                                     value={item.cantidad}
                                     min="0"
-                                    className="w-16 text-center border border-gray-300 rounded mx-1"
+                                    className="w-10 text-center border border-gray-300 rounded mx-1"
                                     onChange={(e) => handleChange(index, 'cantidad', parseInt(e.target.value) || 0)}
                                     style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
                                 />
                                 <input
                                     type="text"
                                     value={item.unidad}
-                                    className="w-16 text-center border border-gray-300 rounded mx-1"
+                                    className="w-8 text-center border border-gray-300 rounded mx-1"
                                     onChange={(e) => handleChange(index, 'unidad', e.target.value)}
                                     placeholder="Unidad"
                                 />
@@ -132,7 +132,7 @@ const ListaConfirmada = () => {
                                     type="number"
                                     value={item.precio}
                                     min="0"
-                                    className="w-16 text-center border border-gray-300 rounded mx-1"
+                                    className="w-8 text-center border border-gray-300 rounded mx-1"
                                     onChange={(e) => handleChange(index, 'precio', parseFloat(e.target.value) || 0)}
                                     placeholder="Precio"
                                 />

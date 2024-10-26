@@ -108,20 +108,20 @@ function ListadoVentasMobile() {
   };
 
   return (
-    <div className="p-8 mb-12">
+    <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-900 p-4">
       <header className="mb-4">
-        <h1 className="text-2xl font-bold">Lista para Vender</h1>
+        <h1 className="text-2xl font-bold text-white">Lista para Vender</h1>
       </header>
       
       <section>
-        <h2 className="text-xl font-semibold">Productos Disponibles</h2>
+        <h2 className="text-xl font-semibold text-white">Productos Disponibles</h2>
         <div className="grid gap-4 mt-4">
           {productosData.map(producto => (
             <div key={producto.id} className="border p-4 pl-6 rounded shadow flex items-center gap-2">
               <div className='flex-cols pr-12'>
-                <h3 className="text-lg font-medium">{producto.nombre_producto}</h3>
-                <p>Precio: ${producto.precio.toFixed(2)}</p>
-                <p>Stock: {producto.cantidad}</p>
+                <h3 className="text-lg font-medium text-white">{producto.nombre_producto}</h3>
+                <p className='text-white'>Precio: ${producto.precio.toFixed(2)}</p>
+                <p className='text-white'>Stock: {producto.cantidad}</p>
               </div>
               <button 
                 className="bg-red-500 text-white py-1 px-4 rounded w-11"
@@ -145,8 +145,8 @@ function ListadoVentasMobile() {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-xl font-semibold">Carrito de Compras</h2>
-        <div className="mt-4">
+        <h2 className="text-xl font-semibold text-white">Carrito de Compras</h2>
+        <div className="mt-4 text-white">
           {Object.keys(carrito).length === 0 ? (
             <p>No hay productos en el carrito.</p>
           ) : (

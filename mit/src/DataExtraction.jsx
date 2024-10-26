@@ -166,7 +166,7 @@ const DataExtraction = () => {
 
     const renderCaptureOptions = () => (
         <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Elegir modo de captura</h2>
+            <h2 className="text-xl font-semibold mb-4 text-white">Elegir modo de captura</h2>
             <div className="flex space-x-4">
                 <button
                     onClick={() => requestCameraPermission()}
@@ -205,8 +205,8 @@ const DataExtraction = () => {
     );
 
     return (
-        <div className="p-4 max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold text-center mb-6">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-900 p-4">
+            <h1 className="text-2xl font-bold text-center mb-6 text-white">
                 Subir foto de inventario
             </h1>
 
