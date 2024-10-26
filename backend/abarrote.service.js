@@ -270,7 +270,7 @@ export async function getProductosVentasMasBajas() {
     }
 }
 
-export async function getProveedoresEsteDia() {
+export async function getProductosVentasMasAltas() {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
@@ -312,7 +312,7 @@ export async function getProductosVentasFiltradasFecha() {
      }
  }
 
-export async function getPreguntasStockMes() {
+export async function getProductosDiasMasVentas() {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
@@ -342,7 +342,7 @@ export async function getPreguntasStockMes() {
 //             SELECT p.nombre_producto
 //             FROM productos p
 //             WHERE NOT EXISTS (
-//                 SELECT 1 FROM ventas v WHERE p.id = v.id_producto AND v.fecha BETWEEN '2023-01-10' AND '2023-01-31'
+//                 SELECT 1 FROM ventas v WHERE p.id = v.id_producto AND v.fecha BETWEEN ? AND ?
 //             );
 //         `, [startDate, endDate]);
 //         return rows;
@@ -469,7 +469,7 @@ export async function getProductosCuantoQueda(nombre) {
 }
 
 // Proveedores
-
+// Ver como pasar las fechas
 export async function getProveedoresMasProximo() {
     try {
         const connection = await connectToDB();
@@ -486,14 +486,14 @@ export async function getProveedoresMasProximo() {
     }
 }
 
-// Arreglar query
+// Modificar QUERY para que tambien sea por 0
 export async function getProveedoresSiPaso(nombre) {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
             SELECT 1 AS paso
             FROM proveedores
-            WHERE nombre = 'Proveedor A' AND pasaron_ultima_fecha = TRUE;
+            WHERE nombre = ? AND pasaron_ultima_fecha = TRUE;
         `, [nombre]);
         return rows;
     } catch (error) {
@@ -501,15 +501,15 @@ export async function getProveedoresSiPaso(nombre) {
     }
 }
 
-export async function getProveedoresProductos(providerName) {
+export async function getProveedoresProductos(nombre) {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
             SELECT p.nombre_producto, p.cantidad
             FROM productos p
             JOIN proveedores pr ON p.proveedor_id = pr.id
-            WHERE pr.nombre = 'Proveedor B';
-        `, [providerName]);
+            WHERE pr.nombre = ?;
+        `, [nombre]);
         return rows;
     } catch (error) {
         throw error;
@@ -530,6 +530,7 @@ export async function getProveedoresNoPasaron() {
     }
 }
 
+// Sincronizar las fechas para que utilize tiempos reales
 export async function getProveedoresEsteMes() {
     try {
         const connection = await connectToDB();
@@ -545,6 +546,7 @@ export async function getProveedoresEsteMes() {
     }
 }
 
+// Igual que el anterior
 export async function getProveedoresEstaSemana() {
     try {
         const connection = await connectToDB();
@@ -560,6 +562,7 @@ export async function getProveedoresEstaSemana() {
     }
 }
 
+// Igual que el anterior
 export async function getProveedoresEsteDia() {
     try {
         const connection = await connectToDB();
