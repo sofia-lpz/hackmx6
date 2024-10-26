@@ -6,6 +6,8 @@ import Mensajes from './Mensajes';
 import ProductList from './ProductList';
 import ListaProductos from './ListaProductos';
 import SubirFoto from './SubirFoto.jsx';
+import VerProveedores from './VerProveedores.jsx';
+import VerVentas from './VerVentas.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -17,6 +19,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/product-list" element={<ProductList />} />
         <Route path="/lista-productos" element={<ListaProductos />} />
         <Route path="/subir-foto" element={<SubirFoto />} />
+        <Route path="/ver-proveedores" element={<VerProveedores />} />
+        <Route path="/ver-ventas" element={<VerVentas />} />
       </Routes>
     </Router>
   </React.StrictMode>
