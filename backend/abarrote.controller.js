@@ -157,12 +157,12 @@ export const getProveedorById = async (req, res) => {
     }
 }
 
-export const getProductosVentasMasAltas = async (req, res) => {
-    console.log("entro a controller");
+export const getMasVendido = async (req, res) => {
     try {
-        const productos = await abarroteService.getProductosVentasMasAltas();
-        res.json(productos);
-    } catch (error) {
+        const producto = await abarroteService.getMasVendido();
+        res.json(producto);
+    }
+    catch (error) {
         res.status(500).send({ message: error.message });
     }
 }

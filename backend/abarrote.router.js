@@ -33,7 +33,6 @@ router.put("/proveedores/:id", abarroteController.putProveedores);
 router.post("/proveedores", abarroteController.postProveedores);
 router.get("/proveedores/:id", abarroteController.getProveedorById);
 
-router.get("/productos/ventas_mas_altas", abarroteController.getProductosVentasMasAltas);
-
+router.get("/mas_vendido", abarroteController.getMasVendido);
 
 export{ router};

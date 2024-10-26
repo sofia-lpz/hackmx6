@@ -248,14 +248,10 @@ export async function getProveedorById(id) {
     }
 }
 
-//extra endpoints:
-
-export async function getProductosVentasMasAltas() {
+export async function getMasVendido() {
     try {
-        console.log('Intentando conectar a la base de datos...');
         const connection = await connectToDB();
-        const [rows] = await connection.execute("SELECT * FROM productos ORDER BY id DESC LIMIT 1");
-        console.log('Query result:', rows);
+        const [rows] = await connection.execute("SELECT p.*, SUM(v.cantidad) as total FROM productos p JOIN ventas v ON p.id = v.id_producto GROUP BY p.id ORDER BY total DESC LIMIT 1");
         return rows;
     } catch (error) {
         throw error;
