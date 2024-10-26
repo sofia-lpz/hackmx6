@@ -8,11 +8,13 @@ function ProductList() {
     location.state?.products?.map((product) => ({
       ...product,
       amount: Number(product.amount) || 1,
+      unit: product.unit || '',
     })) || []
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [newProductName, setNewProductName] = useState('');
   const [newProductAmount] = useState(1); // Fixed amount of 1 for new products
+  const [newProductUnit, setNewProductUnit] = useState('');
 
   const handleDelete = (index) => {
     setProducts(products.filter((_, i) => i !== index));
@@ -21,6 +23,12 @@ function ProductList() {
   const handleEdit = (index, newName) => {
     const updatedProducts = [...products];
     updatedProducts[index].name = newName;
+    setProducts(updatedProducts);
+  };
+
+  const handleUnitChange = (index, newUnit) => {
+    const updatedProducts = [...products];
+    updatedProducts[index].unit = newUnit;
     setProducts(updatedProducts);
   };
 
@@ -40,9 +48,25 @@ function ProductList() {
   };
 
   const handleAddProduct = () => {
-    if (newProductName.trim()) {
-      setProducts([...products, { name: newProductName, amount: newProductAmount }]);
+    if (newProductName.trim() && newProductUnit.trim()) {
+      const newProduct = {
+        name: newProductName,
+        amount: newProductAmount,
+        unit: newProductUnit,
+      };
+      setProducts([...products, newProduct]);
       setNewProductName('');
+      setNewProductUnit('');
+    }
+  };
+
+  const handleSaveProducts = async () => {
+    try {
+      await axios.post('/api/products/batch', { products });
+      alert('Productos guardados exitosamente');
+    } catch (error) {
+      console.error('Error saving products:', error);
+      alert('Error al guardar productos');
     }
   };
 
@@ -84,6 +108,13 @@ function ProductList() {
               onChange={(e) => handleEdit(index, e.target.value)}
               className="bg-gray-700 text-white p-1 rounded mx-2"
             />
+            <input
+              type="text"
+              value={product.unit}
+              onChange={(e) => handleUnitChange(index, e.target.value)}
+              placeholder="Unidad"
+              className="bg-gray-700 text-white p-1 rounded mx-2"
+            />
             <button
               onClick={() => handleDelete(index)}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
@@ -101,6 +132,13 @@ function ProductList() {
           placeholder="Ingresa un nuevo producto..."
           className="border p-2 w-full mb-4"
         />
+        <input
+          type="text"
+          value={newProductUnit}
+          onChange={(e) => setNewProductUnit(e.target.value)}
+          placeholder="Ingresa la unidad de medida..."
+          className="border p-2 w-full mb-4"
+        />
         <button
           onClick={handleAddProduct}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
@@ -108,6 +146,12 @@ function ProductList() {
           Agregar Producto
         </button>
       </div>
+      <button
+        onClick={handleSaveProducts}
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+      >
+        Guardar
+      </button>
       <button
         onClick={() => window.location.href = '/'}
         className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
