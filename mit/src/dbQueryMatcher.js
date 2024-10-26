@@ -2,7 +2,7 @@ import OpenAI from "openai";
 
 const API_BASE_URL = 'http://localhost:8080/api';
 const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: '',
     dangerouslyAllowBrowser: true
 });
 
@@ -31,6 +31,12 @@ const NAVIGATION_PATTERNS = [
         keywords: ['confirmar', 'revisar lista', 'verificar productos'],
         route: '/lista-confirmada',
         message: 'Te llevaré a confirmar la lista'
+    },
+
+    {
+        keywords: ['listar','enseñar', 'productos' ],
+        route: '/lista-productos',
+        message: 'Te llevaré a confirmar la lista'
     }
 ];
 
@@ -44,9 +50,10 @@ const checkNavigationPrompt = async (question) => {
         Posibles destinos de navegación:
         1. Captura por foto (/data-extraction): para escanear, fotografiar o capturar productos
         2. Chat (/mensajes): para escribir o mensajear productos
-        3. Proveedores (/proveedores): para gestionar proveedores o distribuidores
-        4. Ventas (/ListaVentaMobile): para registrar ventas o cobros
-        5. Confirmar lista (/lista-confirmada): para revisar o confirmar productos
+        3. Proveedores (/proveedores): para gestionar nuevos proveedores o distribuidores
+        4. Ventas (/ListaVentaMobile): para registrar ventas o cobros cuando los clientes compran
+        5. Confirmar lista (/lista-confirmada): para revisar o confirmar productos que serán ingresados en el stock
+        6. listar todos mis productos y o modificarlos (/lista-productos)
 
         Si detectas intención de navegación, responde con un JSON:
         {
@@ -197,7 +204,7 @@ export const matchQueryToEndpoint = async (question) => {
 // Helper function for basic navigation pattern checking
 const checkBasicNavigation = (question) => {
     const normalizedQuestion = question.toLowerCase();
-    const actionWords = ['agregar', 'añadir', 'registrar', 'crear', 'nuevo', 'nueva', 'ir', 'ver', 'mostrar'];
+    const actionWords = ['agregar', 'añadir', 'registrar', 'crear', 'nuevo', 'nueva', 'ir', 'ver', 'mostrar', 'enseñar', 'querer'];
     
     if (actionWords.some(word => normalizedQuestion.includes(word))) {
         for (const pattern of NAVIGATION_PATTERNS) {

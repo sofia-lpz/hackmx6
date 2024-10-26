@@ -26,7 +26,7 @@ const DataExtraction = () => {
                     };
                 })
                 .catch(error => {
-                    console.error('Error checking camera permission:', error);
+                    console.error('Error checando permisos', error);
                 });
         }
     }, []);
@@ -46,7 +46,7 @@ const DataExtraction = () => {
 
     const processWithAI = async (extractedText) => {
         const openai = new OpenAI({
-            apiKey: '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',
+            apiKey: '',
             dangerouslyAllowBrowser: true
         });
     
@@ -166,7 +166,7 @@ const DataExtraction = () => {
 
     const renderCaptureOptions = () => (
         <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Choose Capture Method</h2>
+            <h2 className="text-xl font-semibold mb-4">Elegir modo de captura</h2>
             <div className="flex space-x-4">
                 <button
                     onClick={() => requestCameraPermission()}
@@ -178,7 +178,7 @@ const DataExtraction = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                             d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span>Use Camera</span>
+                    <span>Usar Camara</span>
                 </button>
                 
                 <div className="relative">
@@ -197,7 +197,7 @@ const DataExtraction = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                         </svg>
-                        <span>Upload Image</span>
+                        <span>Subir Imagen</span>
                     </button>
                 </div>
             </div>
@@ -207,7 +207,7 @@ const DataExtraction = () => {
     return (
         <div className="p-4 max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold text-center mb-6">
-                Document Data Extraction
+                Subir foto de inventario
             </h1>
 
             {cameraPermission === 'denied' && (
@@ -239,7 +239,7 @@ const DataExtraction = () => {
             {isLoading && (
                 <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-                    <p className="mt-4">Processing image...</p>
+                    <p className="mt-4">Procesando imagen...</p>
                 </div>
             )}
 
@@ -256,7 +256,7 @@ const DataExtraction = () => {
                     {/* Display Raw OCR Data */}
                     {extractedData && (
                         <div className="mt-4">
-                            <h3 className="text-lg font-semibold mb-2">Extracted Data:</h3>
+                            <h3 className="text-lg font-semibold mb-2"> Datos Extraidos:</h3>
                             <pre className="bg-gray-100 p-4 rounded overflow-x-auto">
                                 {JSON.stringify(extractedData, null, 2)}
                             </pre>
@@ -266,7 +266,7 @@ const DataExtraction = () => {
                     {/* Display Processed Data */}
                     {processedData && (
                         <div className="mt-4">
-                            <h3 className="text-lg font-semibold mb-2">Processed Data:</h3>
+                            <h3 className="text-lg font-semibold mb-2">Datos Procesados:</h3>
                             <pre className="bg-gray-100 p-4 rounded overflow-x-auto">
                                 {JSON.stringify(processedData, null, 2)}
                             </pre>
@@ -282,7 +282,7 @@ const DataExtraction = () => {
                         }}
                         className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     >
-                        Process Another Image
+                        Procesa otra imagen
                     </button>
                 </div>
             )}

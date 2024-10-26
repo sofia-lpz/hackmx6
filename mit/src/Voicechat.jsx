@@ -6,7 +6,7 @@ import { useSpeechRecognition } from './SpeechRecognitionContext';
 import { matchQueryToEndpoint, executeQuery } from './dbQueryMatcher';
 
 const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: '',
     dangerouslyAllowBrowser: true
 });
 

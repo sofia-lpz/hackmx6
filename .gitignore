@@ -1,9 +1,7 @@
 .env
-<<<<<<< HEAD
-
 /text_to_speech/voicechat_env
-
-
-=======
 node_modules/
->>>>>>> 4f380c69e807e00477345f30e42dc8f912b7d62d
+**/.DS_Store
+hackmx6.zip
+inven2/
+inventory-scanner/

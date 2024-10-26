@@ -2,7 +2,7 @@ import OpenAI from "openai";
 
 // Create a single OpenAI instance
 const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: '',
     dangerouslyAllowBrowser: true
 });
 
@@ -18,6 +18,20 @@ class DataProcessor {
             const prompt = `
                 You are a data parsing assistant. Analyze the following extracted data and format it as a JSON object with a 'data' array.
                 The data should match one of these formats:
+
+                you should use ventas template when receiving data looks like this 
+                [
+                    {
+                      "1": "platanos",
+                      "2": "3"
+                    },
+                    {
+                      "1": "manzanas",
+                      "2": "6"
+                    }
+                  ]
+
+                use productos or others when not
 
                 1. For productos:
                 {
@@ -35,9 +49,7 @@ class DataProcessor {
                 {
                     "data": [
                         {
-                            
-                            "total": numeric_total,
-                            "producto_nombre": "product_id",
+                            "nombre_producto": "product_id",
                             "cantidad": numeric_quantity,
                         }
                     ]
@@ -56,6 +68,22 @@ class DataProcessor {
                     ]
                 }
 
+
+                you should use ventas template when receiving data looks like this 
+                [
+                    {
+                      "1": "platanos",
+                      "2": "3"
+                    },
+                    {
+                      "1": "manzanas",
+                      "2": "6"
+                    }
+                  ]
+
+                use productos or others when not
+
+                
                 Analyze this data and return it in the appropriate format:
                 ${JSON.stringify(extractedData, null, 2)}
 
@@ -122,7 +150,7 @@ class DataProcessor {
             const firstItem = parsedData.data[0];
             let endpoint = 'productos'; // default
 
-            if (firstItem.fecha && firstItem.total) {
+            if (firstItem.nombre_producto&& firstItem.cantidad) {
                 endpoint = 'ventas';
             } else if (firstItem.contacto && firstItem.telefono) {
                 endpoint = 'proveedores';
