@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['Verdana', 'Geneva', 'sans-serif']
+        },
       screens: {
         'xs': '480px', // extra small devices
         'sm': '640px', // small devices
