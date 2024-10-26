@@ -1,2 +1,7 @@
 .env
+/text_to_speech/voicechat_env
 node_modules/
+**/.DS_Store
+hackmx6.zip
+inven2/
+inventory-scanner/

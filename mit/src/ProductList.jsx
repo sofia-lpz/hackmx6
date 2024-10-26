@@ -15,6 +15,7 @@ function ProductList() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [newProductName, setNewProductName] = useState('');
+  const [newProductAmount] = useState(1);
   const [newProductPrice, setNewProductPrice] = useState('');
   const [newProductProvider, setNewProductProvider] = useState('');
 

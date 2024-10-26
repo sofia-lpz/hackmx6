@@ -197,7 +197,7 @@ export const getProductosVentasMasBajas = async (req, res) => {
         console.error('Error fetching lowest sales products:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
     }
-}
+};
 
 export const getProductosVentasMasAltas = async (req, res) => {
     try {
@@ -218,7 +218,8 @@ export const getProductosVentasFiltradasFecha = async (req, res) => {
         console.error('Error en getProductosVentasFiltradasFecha:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas filtradas por fecha." });
     }
-}
+};
+
 
 
 export const getProductosDiasMasVentas = async (req, res) => {
