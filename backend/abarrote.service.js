@@ -114,27 +114,13 @@ export async function postProductos(producto) {
             } else {
                 throw new Error("Proveedor no encontrado");
             }
+
+            const index = keys.indexOf('proveedor_nombre');
+            if (index > -1) {
+                keys.splice(index, 1);
+                values.splice(index, 1);
+            }
         }
-
-        // Ensure all required fields are present and set to null if not provided
-        const requiredFields = ['nombre_producto', 'cantidad', 'gramos_por_unidad', 'precio', 'proveedor_id'];
-        requiredFields.forEach(field => {
-            if (!keys.includes(field)) {
-                keys.push(field);
-                values.push(null);
-            }
-        });
-
-        // Log keys and values to debug
-        console.log('Keys:', keys);
-        console.log('Values:', values);
-
-        // Check for undefined values
-        values.forEach((value, index) => {
-            if (value === undefined) {
-                throw new Error(`Value for key ${keys[index]} is undefined`);
-            }
-        });
 
         const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
         await connection.execute(query, values);
