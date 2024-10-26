@@ -60,13 +60,13 @@ router.get("/proveedores/mas_proximo/:fecha_actual", abarroteController.getProve
 router.get("/proveedores/sipaso/:nombre", abarroteController.getProveedoresSiPaso);//regresa 1 o 0 si el proveedor ya paso usando su nombre
 router.get("/proveedores/productos/:nombre", abarroteController.getProveedoresProductos);//regresa los productos que vende un proveedor usando su nombre
 router.get("/proveedores/no_pasaron", abarroteController.getProveedoresNoPasaron);//regresa los proveedores que no pasaron la ultima vez
-router.get("/proveedores/este_mes", abarroteController.getProveedoresEsteMes);
-router.get("/proveedores/esta_semana", abarroteController.getProveedoresEstaSemana);
-router.get("/proveedores/este_dia", abarroteController.getProveedoresEsteDia);
+router.get("/proveedores/este_mes", abarroteController.getProveedoresEsteMes);//regresa los proveedores que van a pasar este mes (checar que sean despues de hoy)
+router.get("/proveedores/esta_semana", abarroteController.getProveedoresEstaSemana);//regresa los proveedores que van a pasar esta semana (checar que sean despues de hoy)
+router.get("/proveedores/este_dia", abarroteController.getProveedoresEsteDia);//regresa los provedores que van a pasar hoy (sin checar hora)
 
 //preguntas
-router.get("/preguntas/esta_semana", abarroteController.getPreguntasStockSemana); //que tengo que comprar esta semana?
-router.get("/preguntas/este_mes", abarroteController.getPreguntasStockMes); //que tengo que comprar este mes?
+router.get("/preguntas/esta_semana", abarroteController.getPreguntasStockSemana); //que tengo que comprar esta semana? regresa lista de productos que tengan stock menos de 10
+router.get("/preguntas/este_mes", abarroteController.getPreguntasStockMes); //que tengo que comprar este mes? regresa lista de productos que tengan stock menos de 30
 
 
 export{ router};
