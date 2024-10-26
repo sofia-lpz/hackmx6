@@ -87,7 +87,7 @@ function ListaProductos() {
             <div className="flex-1">
               <button 
                 onClick={() => deleteProduct(product.id)}
-                className="bg-red-500 text-sm hover:bg-red-700 text-white font-bold py-1 px-1 rounded"
+                className="bg-red-500  hover:bg-red-700 text-white text-sm font-bold py-1 px-1 rounded"
               >
                 Eliminar
               </button>

@@ -8,27 +8,23 @@ function ProductList() {
     location.state?.products?.map((product) => ({
       ...product,
       amount: Number(product.amount) || 1,
-      unit: product.unit || '',
+      price: product.price || 0,
+      provider: product.provider || '',
     })) || []
   );
+
   const [searchTerm, setSearchTerm] = useState('');
   const [newProductName, setNewProductName] = useState('');
-  const [newProductAmount] = useState(1); // Fixed amount of 1 for new products
-  const [newProductUnit, setNewProductUnit] = useState('');
+  const [newProductPrice, setNewProductPrice] = useState('');
+  const [newProductProvider, setNewProductProvider] = useState('');
 
   const handleDelete = (index) => {
     setProducts(products.filter((_, i) => i !== index));
   };
 
-  const handleEdit = (index, newName) => {
+  const handleEdit = (index, field, value) => {
     const updatedProducts = [...products];
-    updatedProducts[index].name = newName;
-    setProducts(updatedProducts);
-  };
-
-  const handleUnitChange = (index, newUnit) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].unit = newUnit;
+    updatedProducts[index][field] = value;
     setProducts(updatedProducts);
   };
 
@@ -48,27 +44,42 @@ function ProductList() {
   };
 
   const handleAddProduct = () => {
-    if (newProductName.trim() && newProductUnit.trim()) {
+    if (newProductName.trim() && newProductPrice.trim() && newProductProvider.trim()) {
       const newProduct = {
         name: newProductName,
-        amount: newProductAmount,
-        unit: newProductUnit,
+        amount: 1,
+        price: parseFloat(newProductPrice),
+        provider: newProductProvider,
       };
       setProducts([...products, newProduct]);
       setNewProductName('');
-      setNewProductUnit('');
+      setNewProductPrice('');
+      setNewProductProvider('');
     }
   };
 
   const handleSaveProducts = async () => {
     try {
-      await axios.post('/api/products/batch', { products });
+      // Map products to match the database structure precisely
+      const parsedProducts = products.map((product) => ({
+        nombre_producto: product.name,          // Match the database field for product name
+        cantidad: product.amount,               // Should match 'cantidad' in DB
+        gramos_por_unidad: product.unit || 0,   // Adjust as needed
+        precio: parseFloat(product.price),      // Ensure the price is a float
+        proveedor_id: product.providerId        // Ensure this is the actual ID if needed
+      }));
+  
+      // Send each product to the backend individually
+      for (const product of parsedProducts) {
+        await axios.post('/api/productos', product);
+      }
+  
       alert('Productos guardados exitosamente');
     } catch (error) {
       console.error('Error saving products:', error);
       alert('Error al guardar productos');
     }
-  };
+  };  
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -82,45 +93,43 @@ function ProductList() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Busca un producto..."
-        className="border p-2 w-full sm:w-80 mb-4"
+        className="border p-2 w-full sm:w-80 mb-4 text-black placeholder-gray-500"
       />
       <div className="border p-4 w-full sm:w-96 lg:w-1/2 h-96 lg:h-[50vh] overflow-y-auto mb-4 flex flex-col">
         {filteredProducts.map((product, index) => (
-          <div key={index} className="bg-gray-800 text-white p-2 rounded-lg mb-2 flex items-center justify-between">
-            <div className="flex items-center">
+          <div key={index} className="bg-gray-800 text-white p-2 rounded-lg mb-2 flex flex-col items-start w-full">
+            <div className="flex items-center mb-2">
               <button
                 onClick={() => handleDecrease(index)}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                className="bg-red-500 text-m hover:bg-red-700 text-white font-bold py-2 px-3 rounded"
               >
                 -
               </button>
               <span className="mx-2">{product.amount}</span>
               <button
                 onClick={() => handleIncrease(index)}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                className="bg-green-500 text-m hover:bg-green-700 text-white font-bold py-2 px-3 rounded"
               >
                 +
               </button>
             </div>
-            <input
-              type="text"
-              value={product.name}
-              onChange={(e) => handleEdit(index, e.target.value)}
-              className="bg-gray-700 text-white p-1 rounded mx-2"
-            />
-            <input
-              type="text"
-              value={product.unit}
-              onChange={(e) => handleUnitChange(index, e.target.value)}
-              placeholder="Unidad"
-              className="bg-gray-700 text-white p-1 rounded mx-2"
-            />
-            <button
-              onClick={() => handleDelete(index)}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-            >
-              Borrar
-            </button>
+            <div className="flex flex-col space-y-2 w-full">
+              <span>{product.name}</span>
+              <input
+                type="number"
+                value={product.price}
+                onChange={(e) => handleEdit(index, 'price', e.target.value)}
+                placeholder="Precio"
+                className="border p-2 w-full mb-2 text-black placeholder-gray-500"
+              />
+              <input
+                type="text"
+                value={product.provider}
+                onChange={(e) => handleEdit(index, 'provider', e.target.value)}
+                placeholder="Proveedor"
+                className="border p-2 w-full mb-2 text-black placeholder-gray-500"
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -130,14 +139,21 @@ function ProductList() {
           value={newProductName}
           onChange={(e) => setNewProductName(e.target.value)}
           placeholder="Ingresa un nuevo producto..."
-          className="border p-2 w-full mb-4"
+          className="border p-2 w-full mb-2 text-black placeholder-gray-500"
+        />
+        <input
+          type="number"
+          value={newProductPrice}
+          onChange={(e) => setNewProductPrice(e.target.value)}
+          placeholder="Precio"
+          className="border p-2 w-full mb-2 text-black placeholder-gray-500"
         />
         <input
           type="text"
-          value={newProductUnit}
-          onChange={(e) => setNewProductUnit(e.target.value)}
-          placeholder="Ingresa la unidad de medida..."
-          className="border p-2 w-full mb-4"
+          value={newProductProvider}
+          onChange={(e) => setNewProductProvider(e.target.value)}
+          placeholder="Proveedor"
+          className="border p-2 w-full mb-2 text-black placeholder-gray-500"
         />
         <button
           onClick={handleAddProduct}
@@ -146,6 +162,7 @@ function ProductList() {
           Agregar Producto
         </button>
       </div>
+
       <button
         onClick={handleSaveProducts}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
