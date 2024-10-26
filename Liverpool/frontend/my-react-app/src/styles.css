@@ -1,0 +1,39 @@
+/* src/styles.css */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+  grid-template-rows: auto auto; /* Dos filas */
+  gap: 10px;
+  width: 80%;
+}
+
+.image-gallery .image {
+  border: 1px solid black;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Altura fija para cada imagen */
+}
+
+.upload-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 20%; /* Ancho del botón ajustado */
+}
