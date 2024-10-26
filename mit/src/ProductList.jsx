@@ -11,7 +11,7 @@ function ProductList() {
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [newProductName, setNewProductName] = useState('');
-  const [newProductAmount] = useState(1); // Fixed amount of 1 for new products
+  const [newProductAmount] = useState(1);
 
   const handleDelete = (index) => {
     setProducts(products.filter((_, i) => i !== index));
