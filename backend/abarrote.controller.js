@@ -57,6 +57,11 @@ export const deleteProductos = async (req, res) => {
 
 export const postProductos = async (req, res) => {
     try {
+        const existingProducto = await abarroteService.getProductosTodaviaHay(req.body.nombre_producto);
+        if (existingProducto && existingProducto.length > 0) {
+            return res.status(409).send({ message: "Producto con el mismo nombre ya existe." });
+        }
+
         const productos = await abarroteService.postProductos(req.body);
         res.json(productos);
     } catch (error) {
