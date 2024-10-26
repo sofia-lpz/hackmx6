@@ -18,10 +18,6 @@ router.delete("/productos/:id", abarroteController.deleteProductos);
 router.post("/productos", abarroteController.postProductos);
 //check
 
-router.get("/query", abarroteController.query);
-//no
-
-
 router.get("/ventas", abarroteController.getVentas);
 router.delete("/ventas/:id", abarroteController.deleteVentas);
 router.put("/ventas/:id", abarroteController.putVentas);
@@ -34,8 +30,8 @@ router.put("/proveedores/:id", abarroteController.putProveedores);
 router.post("/proveedores", abarroteController.postProveedores);
 router.get("/proveedores/:id", abarroteController.getProveedorById);
 
+//extra endpoints:
 
 
-// get, delete,
 
 export{ router};
