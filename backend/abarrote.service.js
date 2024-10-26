@@ -31,6 +31,45 @@ export async function getProductoById(id) {
     }
 }
 
+export async function venderProducto(id, g, cantidad) {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos WHERE id = ?", [id]);
+        const producto = rows[0];
+
+        if (producto.cantidad < cantidad) {
+            throw new Error("No hay suficiente cantidad de producto");
+        }
+        producto.cantidad -= cantidad;
+        await connection.execute("UPDATE productos SET cantidad = ? WHERE id = ?", [producto.cantidad, id]);
+        await connection.execute("INSERT INTO ventas (id_producto, cantidad, fecha) VALUES (?, ?, NOW())", [id, cantidad]);
+
+        return producto;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function agregarProductos(id, g, cantidad) {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos WHERE id = ?", [id]);
+        const producto = rows[0];
+
+        if (producto.cantidad < cantidad) {
+            throw new Error("No hay suficiente cantidad de producto");
+        }
+        producto.cantidad += cantidad;
+        await connection.execute("UPDATE productos SET cantidad = ? WHERE id = ?", [producto.cantidad, id]);
+        await connection.execute("INSERT INTO ventas (id_producto, cantidad, fecha) VALUES (?, ?, NOW())", [id, cantidad]);
+
+        return producto;
+    } catch (error) {
+        throw error;
+    }
+}
+        
+
 export async function putProductos(id, producto) {
     try {
         const conn = await connectToDB();
@@ -211,175 +250,14 @@ export async function getProveedorById(id) {
 
 //extra endpoints:
 
-//ventas por cantidad
-// Ventas por cantidad
-
-export async function getProductosVentasMasBajas() {
+export async function getProductosVentasMasAltas() {
     try {
         console.log('Intentando conectar a la base de datos...');
         const connection = await connectToDB();
-        console.log('Conectado a la base de datos:', connection);
-        console.log('connection');
-        const [rows] = await connection.execute(`
-            SELECT p.nombre_producto, SUM(v.cantidad) AS total_ventas
-            FROM productos p
-            JOIN ventas v ON p.id = v.id_producto
-            GROUP BY p.id
-            ORDER BY total_ventas ASC
-            LIMIT 1;
-        `);
-        console.log(rows);
-        return rows;
-    } catch (error) {
-        console.error('Error en la ejecución:', error.message);
-        throw error;
-    }
-}
-
-export async function getProductosVentasMasAltas() {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT p.nombre_producto, SUM(v.cantidad) AS total_ventas
-            FROM productos p
-            JOIN ventas v ON p.id = v.id_producto
-            GROUP BY p.id
-            ORDER BY total_ventas DESC
-            LIMIT 1;
-        `);
+        const [rows] = await connection.execute("SELECT * FROM productos ORDER BY id DESC LIMIT 1");
+        console.log('Query result:', rows);
         return rows;
     } catch (error) {
         throw error;
     }
 }
-
-// Ventas por precio
-
-export async function getProductosVentasFiltradasFecha(startDate, endDate) {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT p.nombre_producto, SUM(v.cantidad * p.precio) AS total_ventas
-            FROM productos p
-            JOIN ventas v ON p.id = v.id_producto
-            WHERE v.fecha BETWEEN '?' AND '?'
-            GROUP BY p.id
-            ORDER BY total_ventas DESC;
-        `, [startDate, endDate]);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function getProductosSinVentasFiltradasFecha(startDate, endDate) {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT p.nombre_producto
-            FROM productos p
-            WHERE NOT EXISTS (
-                SELECT 1 FROM ventas v WHERE p.id = v.id_producto AND v.fecha BETWEEN ? AND ?
-            );
-        `, [startDate, endDate]);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-// De stock
-
-export async function getProductosStockProximoAAcabarse() {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT nombre_producto, cantidad
-            FROM productos
-            WHERE cantidad < 10;
-        `);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function getProductosStockAgotado() {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT nombre_producto
-            FROM productos
-            WHERE cantidad = 0;
-        `);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-// Precios
-
-export async function getProductosPrecioMasBajo() {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT nombre_producto, precio
-            FROM productos
-            ORDER BY precio ASC
-            LIMIT 1;
-        `);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function getProductosPrecioMasAlto() {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT nombre_producto, precio
-            FROM productos
-            ORDER BY precio DESC
-            LIMIT 1;
-        `);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-// Proveedores
-
-export async function getProveedoresMasProximo() {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT nombre
-            FROM proveedores
-            WHERE ultima_fecha = (
-                SELECT MAX(ultima_fecha) FROM proveedores
-            );
-        `);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function getProveedoresProductos(providerName) {
-    try {
-        const connection = await connectToDB();
-        const [rows] = await connection.execute(`
-            SELECT pr.nombre, p.nombre_producto
-            FROM proveedores pr
-            JOIN productos p ON pr.id = p.proveedor_id
-            WHERE pr.nombre = ?;
-        `, [providerName]);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-}
-
