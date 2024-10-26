@@ -32,15 +32,15 @@ router.get("/proveedores/:id", abarroteController.getProveedorById);
 
 //extra endpoints:
 
-/*
+
 //ventas por cantidad
-router.get("/productos/ventas_mas_bajas", abarroteController.getProductosVentasMasBajas);
-router.get("/productos/ventas_mas_altas", abarroteController.getProductosVentasMasAltas);
+router.get("/productos/ventas_mas_bajas", abarroteController.getProductosVentasMasBajas);//regresa el producto con menos ventas
+router.get("/productos/ventas_mas_altas", abarroteController.getProductosVentasMasAltas);//regresa el producto con mas ventas
 
 //ventas por precio
-router.get("/productos/ventas_filtradas_fecha", abarroteController.getProductosVentasFiltradasFecha);
-router.get("/productos/dias_de_la_semana_mas_ventas", abarroteController.getProductosDiasMasVentas);
-router.get("/productos/sin_ventas_filtradas_fecha", abarroteController.getProductosSinVentasFiltradasFecha);
+router.get("/productos/ventas_filtradas_fecha", abarroteController.getProductosVentasFiltradasFecha);//todavia no
+router.get("/productos/dias_de_la_semana_mas_ventas", abarroteController.getProductosDiasMasVentas);//regresa el dia de la semana con mas ventas
+router.get("/productos/sin_ventas_filtradas_fecha", abarroteController.getProductosSinVentasFiltradasFecha);//todavia no
 
 //de stock
 router.get("/productos/stock_proximo_a_acabarse", abarroteController.getProductosStockProximoAAcabarse);
@@ -67,6 +67,6 @@ router.get("/proveedores/este_dia", abarroteController.getProveedoresEsteDia);
 //preguntas
 router.get("/preguntas/esta_semana", abarroteController.getPreguntasStockSemana); //que tengo que comprar esta semana?
 router.get("/preguntas/este_mes", abarroteController.getPreguntasStockMes); //que tengo que comprar este mes?
-*/
+
 
 export{ router};
