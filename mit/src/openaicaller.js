@@ -1,9 +1,13 @@
 import OpenAI from "openai";
 
+<<<<<<< HEAD
 /*const openai = new OpenAI({
     apiKey: 
     dangerouslyAllowBrowser: true
 });*/
+=======
+const openai = new OpenAI();
+>>>>>>> 4f380c69e807e00477345f30e42dc8f912b7d62d
 
 export const sendMessageToOpenAI = async (userMessage) => {
     try {

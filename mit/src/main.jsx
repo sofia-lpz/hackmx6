@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<Proveedores />} />
+        <Route path="/" element={<Inventario />} />
         <Route path="/messages" element={<Mensajes />} />
         <Route path="/product-list" element={<ProductList />} />
       </Routes>
