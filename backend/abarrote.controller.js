@@ -9,6 +9,25 @@ export const getProductos = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
+
+export const venderProducto = async (req, res) => {
+    try {
+        const productos = await abarroteService.venderProducto(req.params.id, req.params.g, req.params.cantidad);
+        res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+export const agregarProductos = async (req, res) => {
+    try {
+        const productos = await abarroteService.agregarProductos(req.params.id, req.params.g, req.params.cantidad);
+        res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
 export const getProductoById = async (req, res) => {
     try {
         const productos = await abarroteService.getProductoById(req.params.id);
@@ -138,17 +157,30 @@ export const getProveedorById = async (req, res) => {
     }
 }
 
+
+
 //extra endpoints:
 
 //ventas por cantidad
+
+
 export const getProductosVentasMasBajas = async (req, res) => {
     try {
         const productos = await abarroteService.getProductosVentasMasBajas();
+        if (!productos || productos.length === 0) {
+            return res.status(404).json({ message: "No se encontraron productos con ventas bajas." });
+        }
+        if (!productos || productos.length === 0) {
+            return res.status(404).json({ message: "No se encontraron productos con ventas bajas." });
+        }
         res.json(productos);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        console.error('Error fetching lowest sales products:', error);
+        res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
+        console.error('Error fetching lowest sales products:', error);
+        res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
     }
-}
+};
 
 export const getProductosVentasMasAltas = async (req, res) => {
     try {
@@ -166,9 +198,11 @@ export const getProductosVentasFiltradasFecha = async (req, res) => {
         const productos = await abarroteService.getProductosVentasFiltradasFecha();
         res.json(productos);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        console.error('Error en getProductosVentasFiltradasFecha:', error);
+        res.status(500).send({ message: "Error al recuperar los productos con ventas filtradas por fecha." });
     }
-}
+};
+
 
 export const getProductosDiasMasVentas = async (req, res) => {
     try {
@@ -345,5 +379,3 @@ export const getPreguntasStockMes = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
-
-
