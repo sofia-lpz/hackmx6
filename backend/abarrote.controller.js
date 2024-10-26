@@ -158,9 +158,11 @@ export const getProveedorById = async (req, res) => {
 }
 
 
+
 //extra endpoints:
 
 //ventas por cantidad
+
 
 export const getProductosVentasMasBajas = async (req, res) => {
     try {
@@ -168,11 +170,17 @@ export const getProductosVentasMasBajas = async (req, res) => {
         if (!productos || productos.length === 0) {
             return res.status(404).json({ message: "No se encontraron productos con ventas bajas." });
         }
+        if (!productos || productos.length === 0) {
+            return res.status(404).json({ message: "No se encontraron productos con ventas bajas." });
+        }
         res.json(productos);
     } catch (error) {
         console.error('Error fetching lowest sales products:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
+        console.error('Error fetching lowest sales products:', error);
+        res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
     }
+};
 };
 
 export const getProductosVentasMasAltas = async (req, res) => {

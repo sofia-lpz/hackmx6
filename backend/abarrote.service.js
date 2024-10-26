@@ -270,7 +270,7 @@ export async function getProductosVentasMasBajas() {
     }
 }
 
-export async function getProductosVentasMasAltas() {
+export async function getProveedoresEsteDia() {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
@@ -312,7 +312,7 @@ export async function getProductosVentasFiltradasFecha() {
      }
  }
 
-export async function getProductosDiasMasVentas() {
+export async function getPreguntasStockMes() {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute(`
