@@ -32,7 +32,7 @@ router.get("/proveedores/:id", abarroteController.getProveedorById);
 
 //extra endpoints:
 
-
+/*
 //ventas por cantidad
 router.get("/productos/ventas_mas_bajas", abarroteController.getProductosVentasMasBajas);//regresa el producto con menos ventas
 router.get("/productos/ventas_mas_altas", abarroteController.getProductosVentasMasAltas);//regresa el producto con mas ventas
@@ -67,6 +67,6 @@ router.get("/proveedores/este_dia", abarroteController.getProveedoresEsteDia);//
 //preguntas
 router.get("/preguntas/esta_semana", abarroteController.getPreguntasStockSemana); //que tengo que comprar esta semana? regresa lista de productos que tengan stock menos de 10
 router.get("/preguntas/este_mes", abarroteController.getPreguntasStockMes); //que tengo que comprar este mes? regresa lista de productos que tengan stock menos de 30
-
+*/
 
 export{ router};
