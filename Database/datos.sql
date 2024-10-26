@@ -3,18 +3,18 @@ USE abarrotes;
 -- Insert dummy data into proveedores table
 INSERT INTO proveedores (nombre, telefono, periodo, ultima_fecha, pasaron_ultima_fecha)
 VALUES 
-('Proveedor A', '1234567890', 'diario', '2023-01-01',  1),
+('Proveedor A', '1234567890', 'diario', '2023-01-01', 1),
 ('Proveedor B', '0987654321', 'semanal', '2023-01-07', 0),
 ('Proveedor C', '1122334455', 'mensual', '2023-01-15', 0);
 
 -- Insert dummy data into productos table
-INSERT INTO productos (nombre_producto, cantidad, gramos_por_unidad, precio, proveedor_id)
+INSERT INTO productos (nombre_producto, cantidad, unidad, precio, proveedor_id)
 VALUES 
-('Manzana', 5, 100, 0.5, 1), -- 5 manzanas, each 100 grams, provided by Proveedor A
-('Saco de croquetas', 1, 10000, 20.0, 2), -- 1 sack of croquettes, 10000 grams, provided by Proveedor B
-('Leche', 10, 1000, 1.2, 1), -- 10 liters of milk, each 1000 grams, provided by Proveedor A
-('Pan', 20, 50, 0.3, 3), -- 20 pieces of bread, each 50 grams, provided by Proveedor C
-('Arroz', 2, 5000, 10.0, 2); -- 2 bags of rice, each 5000 grams, provided by Proveedor B
+('Manzana', 5, 'g', 0.5, 1), -- 5 manzanas, each in grams, provided by Proveedor A
+('Croquetas', 1, 'g', 20.0, 2), -- 1 sack of croquettes, in grams, provided by Proveedor B
+('Leche', 10, 'l', 1.2, 1), -- 10 liters of milk, provided by Proveedor A
+('Pan', 20, 'g', 0.3, 3), -- 20 pieces of bread, each in grams, provided by Proveedor C
+('Arroz', 2, 'g', 10.0, 2); -- 2 bags of rice, each in grams, provided by Proveedor B
 
 -- Insert dummy data into ventas table
 INSERT INTO ventas (id_producto, cantidad, fecha)

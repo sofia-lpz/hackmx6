@@ -13,4 +13,3 @@ app.use("/api", router);
 app.listen(PORT, () => {
   console.log(`pronostico escuchando en el puerto ${PORT}`);
 });
-
