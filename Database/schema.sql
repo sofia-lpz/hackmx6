@@ -28,3 +28,26 @@ CREATE TABLE ventas (
     fecha DATE DEFAULT '2023-01-01',
     FOREIGN KEY (id_producto) REFERENCES productos(id) ON DELETE CASCADE
 );
+
+DELIMITER //
+CREATE TRIGGER on_venta
+AFTER INSERT ON ventas
+FOR EACH ROW
+BEGIN
+    UPDATE productos
+    SET cantidad = cantidad - NEW.cantidad
+    WHERE id = NEW.id_producto;
+END;
+//
+
+CREATE TRIGGER on_delete_venta
+AFTER DELETE ON ventas
+FOR EACH ROW
+BEGIN
+    UPDATE productos
+    SET cantidad = cantidad + OLD.cantidad
+    WHERE id = OLD.id_producto;
+END;
+//
+
+DELIMITER ;
