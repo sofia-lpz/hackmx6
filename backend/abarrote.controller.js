@@ -77,6 +77,15 @@ export const getProveedorByNombre = async (req, res) => {
     }
 }
 
+export const getProductoByNombre = async (req, res) => {
+    try {
+        const productos = await abarroteService.getProductoByNombre(req.params.nombre);
+        res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
 //ventas
 export const getVentas = async (req, res) => {
     try {
