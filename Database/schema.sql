@@ -7,7 +7,7 @@ CREATE TABLE proveedores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),
     telefono VARCHAR(255),
-    periodo enum('diario', 'semanal', 'mensual')
+    periodo enum('diario', 'semanal', 'mensual'),
     ultima_fecha DATE
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE productos (
     gramos_por_unidad FLOAT,
     cantidad_gramos FLOAT,
     cantidad_kilogramos FLOAT,
-    precio FLOAT
+    precio FLOAT,
     proveedor_id INT,
     FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
 );
