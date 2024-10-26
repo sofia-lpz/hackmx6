@@ -12,19 +12,19 @@ function Inventario() {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded w-full sm:w-auto"
           onClick={() => alert('Mock: Take a picture of your inventory note')}
         >
-          Tomar una foto
+          <b style={{ color: ' #034267 '}}>Tomar una foto:</b> Sube una foto de tu inventario escrito a mano
         </button>
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
           onClick={() => navigate('/messages')}
         >
-          Escribir inventario
+          <b style={{ color: ' #1c4815 '}}>Escribir inventario:</b> Habla con un asistente para introducir tu inventario
         </button>
         <button
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
           onClick={() => alert('Mock: Input inventory through voice commands')}
         >
-          Inventario por comandos de voz
+          <b style={{ color: ' #890e0e '}}>Inventario por comandos de voz:</b> Habla para introducir tu inventario
         </button>
       </div>
     </div>

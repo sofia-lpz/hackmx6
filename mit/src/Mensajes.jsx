@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Mensajes() {
     const [input, setInput] = useState('');
-    const [messages, setMessages] = useState([{ text: 'Enter the name of the product', sender: 'ai' }]);
+    const [messages, setMessages] = useState([{ text: 'Envía el nombre del producto que deseas agregar a tu inventario', sender: 'ai' }]);
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
   
@@ -16,7 +16,7 @@ function Mensajes() {
         ]);
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: 'Enter the next product name.', sender: 'ai' },
+          { text: 'Envía el nombre del siguiente producto.', sender: 'ai' },
         ]);
         setInput('');
       }
@@ -28,7 +28,7 @@ function Mensajes() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-900 p-4">
-      <h1 className="text-2xl font-bold text-white mb-4">Chat with AI</h1>
+      <h1 className="text-2xl font-bold text-white mb-4">Chatea con un asistente</h1>
       <div className="border p-4 w-full sm:w-80 h-96 overflow-y-auto mb-4 flex flex-col">
         {messages.map((msg, index) => (
           <div
@@ -61,14 +61,14 @@ function Mensajes() {
           onClick={handleFinish}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
         >
-          Finished
+          Terminar
         </button>
       </div>
       <button
         onClick={() => window.location.href = '/'}
-        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-auto sm:w-auto mt-2"
       >
-        Return
+        Regresar
       </button>
     </div>
   );
