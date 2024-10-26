@@ -105,16 +105,43 @@ export async function postProductos(producto) {
         const keys = Object.keys(producto);
         const values = Object.values(producto);
 
+        // Ensure that proveedor_id is correctly set if proveedor_nombre is provided
         if (keys.includes('proveedor_nombre')) {
-            const proveedor = getProveedorByNombre(producto.proveedor_nombre);
-            values.push(proveedor.id);
+            const proveedor = await getProveedorByNombre(producto.proveedor_nombre);
+            if (proveedor.length > 0) {
+                values.push(proveedor[0].id);
+                keys.push('proveedor_id');
+            } else {
+                throw new Error("Proveedor no encontrado");
+            }
         }
-        const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
 
+        // Ensure all required fields are present and set to null if not provided
+        const requiredFields = ['nombre_producto', 'cantidad', 'gramos_por_unidad', 'precio', 'proveedor_id'];
+        requiredFields.forEach(field => {
+            if (!keys.includes(field)) {
+                keys.push(field);
+                values.push(null);
+            }
+        });
+
+        // Log keys and values to debug
+        console.log('Keys:', keys);
+        console.log('Values:', values);
+
+        // Check for undefined values
+        values.forEach((value, index) => {
+            if (value === undefined) {
+                throw new Error(`Value for key ${keys[index]} is undefined`);
+            }
+        });
+
+        const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
         await connection.execute(query, values);
         connection.end();
         return producto;
     } catch (error) {
+        console.error('Error in postProductos:', error);
         throw error;
     }
 }
@@ -187,12 +214,13 @@ export async function getVentaById(id) {
 
 //proveedores
 
-export async function getProveedorByNombre(){
+export async function getProveedorByNombre(nombre) {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute("SELECT * FROM proveedores WHERE nombre = ?", [nombre]);
         return rows;
     } catch (error) {
+        console.error('Error in getProveedorByNombre:', error);
         throw error;
     }
 }
