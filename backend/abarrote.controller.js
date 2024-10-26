@@ -9,9 +9,18 @@ export const getProductos = async (req, res) => {
     }
 }
 
+export const getProductoById = async (req, res) => {
+    try {
+        const productos = await abarroteService.getProductoById(req.params.id);
+        res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
 export const putProductos = async (req, res) => {
     try {
-        const productos = await abarroteService.putProductos(req.body);
+        const productos = await abarroteService.putProductos(req.params.id, req.body);
         res.json(productos);
     } catch (error) {
         res.status(500).send({ message: error.message });
