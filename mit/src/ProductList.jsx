@@ -15,12 +15,8 @@ function ProductList() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [newProductName, setNewProductName] = useState('');
-<<<<<<< HEAD
-  const [newProductAmount] = useState(1);
-=======
   const [newProductPrice, setNewProductPrice] = useState('');
   const [newProductProvider, setNewProductProvider] = useState('');
->>>>>>> cyber
 
   const handleDelete = (index) => {
     setProducts(products.filter((_, i) => i !== index));
