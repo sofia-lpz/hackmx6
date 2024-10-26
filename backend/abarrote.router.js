@@ -18,11 +18,55 @@ router.delete("/productos/:id", abarroteController.deleteProductos);
 router.post("/productos", abarroteController.postProductos);
 //check
 
-router.get("/query", abarroteController.query);
-//no
+router.get("/ventas", abarroteController.getVentas);
+router.delete("/ventas/:id", abarroteController.deleteVentas);
+router.put("/ventas/:id", abarroteController.putVentas);
+router.post("/ventas", abarroteController.postVentas);
+router.get("/ventas/:id", abarroteController.getVentaById);
 
+router.get("/proveedores", abarroteController.getProveedores);
+router.delete("/proveedores/:id", abarroteController.deleteProveedores);
+router.put("/proveedores/:id", abarroteController.putProveedores);
+router.post("/proveedores", abarroteController.postProveedores);
+router.get("/proveedores/:id", abarroteController.getProveedorById);
 
+//extra endpoints:
 
-// get, delete,
+/*
+//ventas por cantidad
+router.get("/productos/ventas_mas_bajas", abarroteController.getProductosVentasMasBajas);//regresa el producto con menos ventas
+router.get("/productos/ventas_mas_altas", abarroteController.getProductosVentasMasAltas);//regresa el producto con mas ventas
+
+//ventas por precio
+router.get("/productos/ventas_filtradas_fecha", abarroteController.getProductosVentasFiltradasFecha);//todavia no
+router.get("/productos/dias_de_la_semana_mas_ventas", abarroteController.getProductosDiasMasVentas);//regresa el dia de la semana con mas ventas
+router.get("/productos/sin_ventas_filtradas_fecha", abarroteController.getProductosSinVentasFiltradasFecha);//todavia no
+
+//de stock
+router.get("/productos/stock_proximo_a_acabarse", abarroteController.getProductosStockProximoAAcabarse);//regresa una lista de los productos que tienen menos de 5 de stock
+router.get("/productos/stock_agotado", abarroteController.getProductosStockAgotado);//regresa una lista de ls productos que tienen 0 de stock
+
+//precios
+router.get("/productos/precio_mas_bajo", abarroteController.getProductosPrecioMasBajo);//regresa el producto con el precio mas bajo
+router.get("/productos/precio_mas_alto", abarroteController.getProductosPrecioMasAlto);//regresa el producto con el precio mas alto
+router.get("/productos/precio_filtrado", abarroteController.getProductosPrecioFiltrado);//todavia no
+
+router.get("/productos/precio_total_inventario", abarroteController.getProductosPrecioTotalInventario);//regresa una suma de los precios de todos los productos multiplicados por la cantidad de productos
+router.get("/productos/todavia_hay/:nombre", abarroteController.getProductosTodaviaHay);//regresa 1 o 0 si todavia hay de ese producto usando su nombre
+router.get("/productos/cuanto_queda/:nombre", abarroteController.getProductosCuantoQueda);//regresa la cantidad de ese producto que queda usando su nombre
+
+//proveedores
+router.get("/proveedores/mas_proximo/:fecha_actual", abarroteController.getProveedoresMasProximo);//regresa el proveedor mas proximo a la fecha actual
+router.get("/proveedores/sipaso/:nombre", abarroteController.getProveedoresSiPaso);//regresa 1 o 0 si el proveedor ya paso usando su nombre
+router.get("/proveedores/productos/:nombre", abarroteController.getProveedoresProductos);//regresa los productos que vende un proveedor usando su nombre
+router.get("/proveedores/no_pasaron", abarroteController.getProveedoresNoPasaron);//regresa los proveedores que no pasaron la ultima vez
+router.get("/proveedores/este_mes", abarroteController.getProveedoresEsteMes);//regresa los proveedores que van a pasar este mes (checar que sean despues de hoy)
+router.get("/proveedores/esta_semana", abarroteController.getProveedoresEstaSemana);//regresa los proveedores que van a pasar esta semana (checar que sean despues de hoy)
+router.get("/proveedores/este_dia", abarroteController.getProveedoresEsteDia);//regresa los provedores que van a pasar hoy (sin checar hora)
+
+//preguntas
+router.get("/preguntas/esta_semana", abarroteController.getPreguntasStockSemana); //que tengo que comprar esta semana? regresa lista de productos que tengan stock menos de 10
+router.get("/preguntas/este_mes", abarroteController.getPreguntasStockMes); //que tengo que comprar este mes? regresa lista de productos que tengan stock menos de 30
+*/
 
 export{ router};
