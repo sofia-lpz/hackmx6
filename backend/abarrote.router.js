@@ -43,23 +43,23 @@ router.get("/productos/dias_de_la_semana_mas_ventas", abarroteController.getProd
 router.get("/productos/sin_ventas_filtradas_fecha", abarroteController.getProductosSinVentasFiltradasFecha);//todavia no
 
 //de stock
-router.get("/productos/stock_proximo_a_acabarse", abarroteController.getProductosStockProximoAAcabarse);
-router.get("/productos/stock_agotado", abarroteController.getProductosStockAgotado);
+router.get("/productos/stock_proximo_a_acabarse", abarroteController.getProductosStockProximoAAcabarse);//regresa una lista de los productos que tienen menos de 5 de stock
+router.get("/productos/stock_agotado", abarroteController.getProductosStockAgotado);//regresa una lista de ls productos que tienen 0 de stock
 
 //precios
-router.get("/productos/precio_mas_bajo", abarroteController.getProductosPrecioMasBajo);
-router.get("/productos/precio_mas_alto", abarroteController.getProductosPrecioMasAlto);
-router.get("/productos/precio_filtrado", abarroteController.getProductosPrecioFiltrado);
+router.get("/productos/precio_mas_bajo", abarroteController.getProductosPrecioMasBajo);//regresa el producto con el precio mas bajo
+router.get("/productos/precio_mas_alto", abarroteController.getProductosPrecioMasAlto);//regresa el producto con el precio mas alto
+router.get("/productos/precio_filtrado", abarroteController.getProductosPrecioFiltrado);//todavia no
 
-router.get("/productos/precio_total_inventario", abarroteController.getProductosPrecioTotalInventario);
-router.get("/productos/todavia_hay/:nombre", abarroteController.getProductosTodaviaHay);
-router.get("/productos/cuanto_queda/:nombre", abarroteController.getProductosCuantoQueda);
+router.get("/productos/precio_total_inventario", abarroteController.getProductosPrecioTotalInventario);//regresa una suma de los precios de todos los productos multiplicados por la cantidad de productos
+router.get("/productos/todavia_hay/:nombre", abarroteController.getProductosTodaviaHay);//regresa 1 o 0 si todavia hay de ese producto usando su nombre
+router.get("/productos/cuanto_queda/:nombre", abarroteController.getProductosCuantoQueda);//regresa la cantidad de ese producto que queda usando su nombre
 
 //proveedores
-router.get("/proveedores/mas_proximo", abarroteController.getProveedoresMasProximo);
-router.get("/proveedores/sipaso/:nombre", abarroteController.getProveedoresSiPaso);
-router.get("/proveedores/productos/:nombre", abarroteController.getProveedoresProductos);
-router.get("/proveedores/no_pasaron", abarroteController.getProveedoresNoPasaron);
+router.get("/proveedores/mas_proximo/:fecha_actual", abarroteController.getProveedoresMasProximo);//regresa el proveedor mas proximo a la fecha actual
+router.get("/proveedores/sipaso/:nombre", abarroteController.getProveedoresSiPaso);//regresa 1 o 0 si el proveedor ya paso usando su nombre
+router.get("/proveedores/productos/:nombre", abarroteController.getProveedoresProductos);//regresa los productos que vende un proveedor usando su nombre
+router.get("/proveedores/no_pasaron", abarroteController.getProveedoresNoPasaron);//regresa los proveedores que no pasaron la ultima vez
 router.get("/proveedores/este_mes", abarroteController.getProveedoresEsteMes);
 router.get("/proveedores/esta_semana", abarroteController.getProveedoresEstaSemana);
 router.get("/proveedores/este_dia", abarroteController.getProveedoresEsteDia);
