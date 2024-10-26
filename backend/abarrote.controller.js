@@ -163,9 +163,11 @@ export const getProveedorById = async (req, res) => {
 }
 
 
+
 //extra endpoints:
 
 //ventas por cantidad
+
 
 export const getProductosVentasMasBajas = async (req, res) => {
     try {
@@ -178,7 +180,7 @@ export const getProductosVentasMasBajas = async (req, res) => {
         console.error('Error fetching lowest sales products:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
     }
-};
+}
 
 export const getProductosVentasMasAltas = async (req, res) => {
     try {
@@ -196,9 +198,11 @@ export const getProductosVentasFiltradasFecha = async (req, res) => {
         const productos = await abarroteService.getProductosVentasFiltradasFecha();
         res.json(productos);
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        console.error('Error en getProductosVentasFiltradasFecha:', error);
+        res.status(500).send({ message: "Error al recuperar los productos con ventas filtradas por fecha." });
     }
 }
+
 
 export const getProductosDiasMasVentas = async (req, res) => {
     try {
