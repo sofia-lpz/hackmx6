@@ -1,0 +1,59 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.title-header {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.intro-page, .text-input-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #1C242E; 
+}
+
+.buttons{
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.buttons button{
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  padding: 20px;
+  color: black;
+  background-color: white;
+}
+
+.chat-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 300px;
+  height: 400px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.message {
+  margin: 5px 0;
+}
+
+.message.user {
+  text-align: right;
+  color: blue;
+}
+
+.message.ai {
+  text-align: left;
+  color: green;
+}
+
+
