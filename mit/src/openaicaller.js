@@ -1,9 +1,6 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-    apiKey: "no-tenemos-;(",
-    dangerouslyAllowBrowser: true 
-});
+const openai = new OpenAI();
 
 export const sendMessageToOpenAI = async (userMessage) => {
     try {
