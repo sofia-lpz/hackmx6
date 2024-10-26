@@ -9,6 +9,8 @@ import ListaConfirmada from './ListaConfirmada';
 import Proveedores from './Proveedores';
 import ListaProductos from './ListaProductos';
 import SubirFoto from './SubirFoto.jsx';
+import VerProveedores from './VerProveedores.jsx';
+import VerVentas from './VerVentas.jsx';
 import './index.css';
 import VoiceChat from './Voicechat';
 import DataExtraction from './DataExtraction';
@@ -26,6 +28,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/mensajes" element={<Mensajes />} />
         <Route path="/product-list" element={<ProductList />} />
         <Route path="/lista-productos" element={<ListaProductos />} />
+        <Route path="/subir-foto" element={<SubirFoto />} />
+        <Route path="/ver-proveedores" element={<VerProveedores />} />
+        <Route path="/ver-ventas" element={<VerVentas />} />
         <Route path="/data-extraction" element={<DataExtraction />} />
         <Route path="/proveedores" element={<Proveedores />} />
       </Routes>
