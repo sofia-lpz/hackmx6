@@ -178,12 +178,33 @@ export async function postVentas(venta) {
         const connection = await connectToDB();
         const keys = Object.keys(venta);
         const values = Object.values(venta);
-        const query = `INSERT INTO ventas (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
+        let producto = null;
 
+        // Ensure that producto_id is correctly set if nombre_producto is provided
+        if (keys.includes('nombre_producto')) {
+            const productos = await getProductoByNombre(venta.nombre_producto);
+            if (productos.length > 0) {
+                producto = productos[0];
+                values.push(producto.id);
+                keys.push('id_producto');
+            } else {
+                throw new Error("Producto no encontrado");
+            }
+
+            // Remove nombre_producto from keys and values
+            const index = keys.indexOf('nombre_producto');
+            if (index > -1) {
+                keys.splice(index, 1);
+                values.splice(index, 1);
+            }
+        }
+
+        const query = `INSERT INTO ventas (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
         await connection.execute(query, values);
         connection.end();
-        return venta;
+        return venta; // Return the venta object instead of producto
     } catch (error) {
+        console.error('Error in postVentas:', error);
         throw error;
     }
 }
@@ -207,6 +228,17 @@ export async function getProveedorByNombre(nombre) {
         return rows;
     } catch (error) {
         console.error('Error in getProveedorByNombre:', error);
+        throw error;
+    }
+}
+
+export async function getProductoByNombre(nombre) {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos WHERE nombre_producto = ?", [nombre]);
+        return rows;
+    } catch (error) {
+        console.error('Error in getProductoByNombre:', error);
         throw error;
     }
 }
