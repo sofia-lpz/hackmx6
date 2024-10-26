@@ -211,7 +211,6 @@ export async function getProveedorById(id) {
 
 //extra endpoints:
 
-/*
 //ventas por cantidad
 export async function getProductosVentasMasBajas() {
     try {
@@ -244,5 +243,3 @@ export async function getProductosDiasMasVentas() {
         const [rows] = await connection.execute("SELECT * FROM productos ORDER BY dias_mas_ventas DESC LIMIT 3");
         return rows;
     }
-*/
-
