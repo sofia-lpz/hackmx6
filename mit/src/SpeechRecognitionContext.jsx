@@ -2,7 +2,8 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 
 const SpeechRecognitionContext = createContext(null);
 
-export const SpeechRecognitionProvider = ({ children }) => {
+// Base Provider without navigation
+const BaseSpeechRecognitionProvider = ({ children, onLupitaDetected }) => {
     const [isRecognitionActive, setIsRecognitionActive] = useState(false);
     const recognition = useRef(null);
     const currentTranscript = useRef('');
@@ -22,7 +23,6 @@ export const SpeechRecognitionProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        // Only initialize once
         if (isInitialized.current) return;
         
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -43,27 +43,26 @@ export const SpeechRecognitionProvider = ({ children }) => {
                 let interimTranscript = '';
                 
                 for (let i = 0; i < results.length; i++) {
-                    // Log each result as it comes in
                     const transcript = results[i][0].transcript;
                     if (results[i].isFinal) {
                         finalTranscript += transcript + ' ';
                         console.log('Final transcript:', transcript);
+                        
+                        // Check for "hola lupita" and notify parent
+                        if (transcript.toLowerCase().includes('hola lupita')) {
+                            onLupitaDetected(transcript);
+                        }
                     } else {
                         interimTranscript += transcript;
-                        console.log('Interim transcript:', transcript);
                     }
                 }
 
-                // Log the complete transcript for this recognition event
-                console.log('Current complete transcript:', finalTranscript || interimTranscript);
-
                 currentTranscript.current = finalTranscript;
                 
-                // Dispatch custom event with the transcript
                 window.dispatchEvent(new CustomEvent('speechTranscript', {
                     detail: { 
                         transcript: finalTranscript,
-                        interim: interimTranscript 
+                        interim: interimTranscript
                     }
                 }));
             };
@@ -80,40 +79,10 @@ export const SpeechRecognitionProvider = ({ children }) => {
                 setTimeout(startRecognition, 1000);
             };
 
-            recognition.current.onspeechstart = () => {
-                console.log('Speech detected');
-            };
-
-            recognition.current.onspeechend = () => {
-                console.log('Speech ended');
-            };
-
-            recognition.current.onnomatch = () => {
-                console.log('No speech was recognized');
-            };
-
-            recognition.current.onaudiostart = () => {
-                console.log('Audio capturing started');
-            };
-
-            recognition.current.onaudioend = () => {
-                console.log('Audio capturing ended');
-            };
-
-            recognition.current.onsoundstart = () => {
-                console.log('Sound detected');
-            };
-
-            recognition.current.onsoundend = () => {
-                console.log('Sound ended');
-            };
-
-            // Start initial recognition after a short delay
             setTimeout(startRecognition, 1000);
             isInitialized.current = true;
         }
 
-        // Cleanup function
         return () => {
             if (processingTimeout.current) {
                 clearTimeout(processingTimeout.current);
@@ -122,12 +91,34 @@ export const SpeechRecognitionProvider = ({ children }) => {
                 recognition.current.abort();
             }
         };
-    }, []);
+    }, [onLupitaDetected]);
 
     return (
         <SpeechRecognitionContext.Provider value={{ isRecognitionActive }}>
             {children}
         </SpeechRecognitionContext.Provider>
+    );
+};
+
+// Wrapper component with navigation
+import { useNavigate, useLocation } from 'react-router-dom';
+
+export const SpeechRecognitionProvider = ({ children }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleLupitaDetection = (transcript) => {
+        console.log('Lupita detected! Current path:', location.pathname);
+        if (location.pathname !== '/') {
+            console.log('Not in root, navigating...');
+            navigate('/', { replace: true });
+        }
+    };
+
+    return (
+        <BaseSpeechRecognitionProvider onLupitaDetected={handleLupitaDetection}>
+            {children}
+        </BaseSpeechRecognitionProvider>
     );
 };
 

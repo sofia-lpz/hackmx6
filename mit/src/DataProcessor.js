@@ -23,10 +23,9 @@ class DataProcessor {
                 {
                     "data": [
                         {
-                            "nombre": "product name",
-                            "precio": numeric_price,
-                            "stock": "stock_value",
-                            "categoria": "category",
+                            "nombre_producto": "product name",
+                            "precio": numeric_price,              this should be between ''
+                            "unidad": "unidad_nombre",    
                             "proveedor_nombre": "provider"
                         }
                     ]

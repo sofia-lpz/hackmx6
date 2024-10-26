@@ -3,7 +3,7 @@ import CameraCapture from './CameraCapture';
 import DataProcessor from './DataProcessor';
 import OpenAI from "openai";
 
-const API_BASE_URL = 'http://localhost:8080'; // Update with your API URL
+const API_BASE_URL = 'http://localhost:8080/api'; // Update with your API URL
 const dataProcessor = new DataProcessor(API_BASE_URL);
 
 const DataExtraction = () => {
