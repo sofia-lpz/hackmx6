@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 function ProductList() {
   const location = useLocation();
@@ -51,13 +52,13 @@ function ProductList() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-900 p-4">
-      <h1 className="text-2xl font-bold text-white mb-4">Product List</h1>
+      <h1 className="text-2xl font-bold text-white mb-4">Lista de productos</h1>
       <input
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search for a product..."
-        className="border p-2 w-full mb-4"
+        placeholder="Busca un producto..."
+        className="border p-2 w-full sm:w-80 mb-4"
       />
       <div className="border p-4 w-full sm:w-96 lg:w-1/2 h-96 lg:h-[50vh] overflow-y-auto mb-4 flex flex-col">
         {filteredProducts.map((product, index) => (
@@ -87,7 +88,7 @@ function ProductList() {
               onClick={() => handleDelete(index)}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
             >
-              Delete
+              Borrar
             </button>
           </div>
         ))}
@@ -97,16 +98,28 @@ function ProductList() {
           type="text"
           value={newProductName}
           onChange={(e) => setNewProductName(e.target.value)}
-          placeholder="New product name"
+          placeholder="Ingresa un nuevo producto..."
           className="border p-2 w-full mb-4"
         />
         <button
           onClick={handleAddProduct}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
         >
-          Add Product
+          Agregar Producto
         </button>
       </div>
+      <button
+        onClick={() => window.location.href = '/'}
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+      >
+        Regresar a inicio
+      </button>
+      <button
+        onClick={() => window.location.href = '/messages'}
+        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto mt-2"
+      >
+        Regresar a chatbot
+      </button>
     </div>
   );
 }
