@@ -104,6 +104,11 @@ export async function postProductos(producto) {
         const connection = await connectToDB();
         const keys = Object.keys(producto);
         const values = Object.values(producto);
+
+        if (keys.includes('proveedor_nombre')) {
+            const proveedor = getProveedorByNombre(producto.proveedor_nombre);
+            values.push(proveedor.id);
+        }
         const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
 
         await connection.execute(query, values);
@@ -181,6 +186,16 @@ export async function getVentaById(id) {
 }
 
 //proveedores
+
+export async function getProveedorByNombre(){
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM proveedores WHERE nombre = ?", [nombre]);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
 
 export async function getProveedores() {
     try {

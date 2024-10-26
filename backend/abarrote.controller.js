@@ -61,9 +61,17 @@ export const postProductos = async (req, res) => {
         if (existingProducto && existingProducto.length > 0) {
             return res.status(409).send({ message: "Producto con el mismo nombre ya existe." });
         }
-
         const productos = await abarroteService.postProductos(req.body);
         res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
+export const getProveedorByNombre = async (req, res) => {
+    try {
+        const proveedor = await abarroteService.getProveedorByNombre(req.params.nombre);
+        res.json(proveedor);
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
