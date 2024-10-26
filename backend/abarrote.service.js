@@ -105,16 +105,29 @@ export async function postProductos(producto) {
         const keys = Object.keys(producto);
         const values = Object.values(producto);
 
+        // Ensure that proveedor_id is correctly set if proveedor_nombre is provided
         if (keys.includes('proveedor_nombre')) {
-            const proveedor = getProveedorByNombre(producto.proveedor_nombre);
-            values.push(proveedor.id);
-        }
-        const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
+            const proveedor = await getProveedorByNombre(producto.proveedor_nombre);
+            if (proveedor.length > 0) {
+                values.push(proveedor[0].id);
+                keys.push('proveedor_id');
+            } else {
+                throw new Error("Proveedor no encontrado");
+            }
 
+            const index = keys.indexOf('proveedor_nombre');
+            if (index > -1) {
+                keys.splice(index, 1);
+                values.splice(index, 1);
+            }
+        }
+
+        const query = `INSERT INTO productos (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
         await connection.execute(query, values);
         connection.end();
         return producto;
     } catch (error) {
+        console.error('Error in postProductos:', error);
         throw error;
     }
 }
@@ -165,12 +178,46 @@ export async function postVentas(venta) {
         const connection = await connectToDB();
         const keys = Object.keys(venta);
         const values = Object.values(venta);
-        const query = `INSERT INTO ventas (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
+        let producto = null;
 
+        // Ensure that producto_id is correctly set if nombre_producto is provided
+        if (keys.includes('nombre_producto')) {
+            const productos = await getProductoByNombre(venta.nombre_producto);
+            if (productos.length > 0) {
+                producto = productos[0];
+                values.push(producto.id);
+                keys.push('id_producto');
+            } else {
+                throw new Error("Producto no encontrado");
+            }
+
+            // Remove nombre_producto from keys and values
+            const index = keys.indexOf('nombre_producto');
+            if (index > -1) {
+                keys.splice(index, 1);
+                values.splice(index, 1);
+            }
+        }
+
+        // Check if the product quantity is sufficient
+        const [productRows] = await connection.execute("SELECT cantidad FROM productos WHERE id = ?", [producto.id]);
+        const product = productRows[0];
+        if (product.cantidad < venta.cantidad) {
+            throw new Error("No hay suficiente cantidad de producto");
+        }
+
+        // Insert the sale into the ventas table
+        const query = `INSERT INTO ventas (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
         await connection.execute(query, values);
+
+        // Update the product quantity
+        const newQuantity = product.cantidad - venta.cantidad;
+        await connection.execute("UPDATE productos SET cantidad = ? WHERE id = ?", [newQuantity, producto.id]);
+
         connection.end();
-        return venta;
+        return venta; // Return the venta object instead of producto
     } catch (error) {
+        console.error('Error in postVentas:', error);
         throw error;
     }
 }
@@ -187,12 +234,24 @@ export async function getVentaById(id) {
 
 //proveedores
 
-export async function getProveedorByNombre(){
+export async function getProveedorByNombre(nombre) {
     try {
         const connection = await connectToDB();
         const [rows] = await connection.execute("SELECT * FROM proveedores WHERE nombre = ?", [nombre]);
         return rows;
     } catch (error) {
+        console.error('Error in getProveedorByNombre:', error);
+        throw error;
+    }
+}
+
+export async function getProductoByNombre(nombre) {
+    try {
+        const connection = await connectToDB();
+        const [rows] = await connection.execute("SELECT * FROM productos WHERE nombre_producto = ?", [nombre]);
+        return rows;
+    } catch (error) {
+        console.error('Error in getProductoByNombre:', error);
         throw error;
     }
 }

@@ -3,9 +3,10 @@ USE abarrotes;
 -- Insert dummy data into proveedores table
 INSERT INTO proveedores (nombre, telefono, periodo, ultima_fecha, pasaron_ultima_fecha)
 VALUES 
-('Proveedor A', '1234567890', 'diario', '2023-01-01', 1),
-('Proveedor B', '0987654321', 'semanal', '2023-01-07', 0),
-('Proveedor C', '1122334455', 'mensual', '2023-01-15', 0);
+('gamesa', '1234567890', 'diario', '2023-01-01', 1),
+('bimbo', '0987654321', 'semanal', '2023-01-07', 0),
+('danone', '1122334455', 'mensual', '2023-01-15', 0),
+('pepsico', '6677889900', 'diario', '2023-01-01', 1);
 
 -- Insert dummy data into productos table
 INSERT INTO productos (nombre_producto, cantidad, unidad, precio, proveedor_id)

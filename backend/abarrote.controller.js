@@ -77,6 +77,15 @@ export const getProveedorByNombre = async (req, res) => {
     }
 }
 
+export const getProductoByNombre = async (req, res) => {
+    try {
+        const productos = await abarroteService.getProductoByNombre(req.params.nombre);
+        res.json(productos);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}
+
 //ventas
 export const getVentas = async (req, res) => {
     try {
@@ -188,7 +197,7 @@ export const getProductosVentasMasBajas = async (req, res) => {
         console.error('Error fetching lowest sales products:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas más bajas" });
     }
-}
+};
 
 export const getProductosVentasMasAltas = async (req, res) => {
     try {
@@ -209,7 +218,8 @@ export const getProductosVentasFiltradasFecha = async (req, res) => {
         console.error('Error en getProductosVentasFiltradasFecha:', error);
         res.status(500).send({ message: "Error al recuperar los productos con ventas filtradas por fecha." });
     }
-}
+};
+
 
 
 export const getProductosDiasMasVentas = async (req, res) => {
